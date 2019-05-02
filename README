@@ -1,0 +1,22 @@
+Handle a Rubik's cube with a terminal UI
+
+# Requirements
+
+* Check test framework
+* NCurses
+
+# Install
+
+* git clone https://github.com/libcheck/check.git
+* mkdir build-Release-check
+* mkdir install-Release-check
+* cd build-Release-check
+* cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../install-Release-check ../check
+* make install
+* cd ..
+* git clone https://github.com/mikkoi/rubik.git
+* mkdir build-Release-rubik
+* cd build-Release-rubik
+* cmake -DCMAKE_BUILD_TYPE=Debug -Dcheck_ROOT=../install-Release-check ../rubik
+* make
+
