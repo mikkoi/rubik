@@ -18,7 +18,7 @@ Handle a Rubik's cube with a terminal UI
 * git clone https://github.com/mikkoi/rubik.git
 * mkdir build-Release-rubik
 * cd build-Release-rubik
-* pyenv local $(pyenv whence conan)
+* pyenv local $(pyenv whence conan | head -1)
 * conan install ../rubik
 * cmake -DCMAKE_BUILD_TYPE=Debug -Dcheck_ROOT=../install-Release-check ../rubik
 * make

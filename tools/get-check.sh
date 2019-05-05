@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -x
 git clone https://github.com/libcheck/check.git
 cd check
