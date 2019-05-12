@@ -9,6 +9,11 @@ include(CTest)
 enable_testing()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)
+
+
 # find_package(Cppcheck)
 # if(CPPCHECK_FOUND)
 #     include(cppcheck.cmake)
