@@ -11,7 +11,7 @@ message(STATUS "CURSES_INCLUDE_DIRS:${CURSES_INCLUDE_DIRS}")
 find_package(check 0.12.0 REQUIRED CONFIG)
 
 add_executable(check.test check.test.c)
-target_include_directories(check.test PUBLIC ${check_INCLUDE_DIRS})
+# target_include_directories(check.test PUBLIC ${check_INCLUDE_DIRS})
 target_link_libraries(check.test Check::check)
 add_test(NAME Check COMMAND check.test)
 
