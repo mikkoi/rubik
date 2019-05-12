@@ -1,41 +1,27 @@
-#include <check.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <check.h>
+#include "test_suite.h"
 
 /* The basic unit test looks as follows: */
-START_TEST (test_name) {
+START_TEST (idiotic_test) {
   /* unit test code */
     const char* mikko = "MIKKO";
     ck_assert_str_eq(mikko, "MIKKO");
-    ck_assert_str_eq(mikko, "MAKKO");
+    /* ck_assert_str_eq(mikko, "MAKKO"); */
 }
 END_TEST
 
-Suite * money_suite(void) {
-    Suite *s;
-    TCase *tc_core;
-
-    s = suite_create("Money");
-
-    /* Core test case */
-    tc_core = tcase_create("Core");
-
-    tcase_add_test(tc_core, test_name);
-    suite_add_tcase(s, tc_core);
-
-    return s;
+START_TEST (second_idiotic_test) {
+    const char* mikko = "MIKKO";
+    ck_assert_str_eq(mikko, "MIKKO");
+    /* ck_assert_str_eq(mikko, "MOKKO"); */
 }
+END_TEST
 
-int main(void) {
-    int number_failed;
-    Suite *s;
-    SRunner *sr;
-
-    s = money_suite();
-    sr = srunner_create(s);
-
-    srunner_run_all(sr, CK_NORMAL);
-    number_failed = srunner_ntests_failed(sr);
-    srunner_free(sr);
-    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+void add_tests(size_t const n, void const* tests[n]) {
+    assert(n > 0);
+    tests[0] = idiotic_test;
+    tests[1] = second_idiotic_test;
 }
 

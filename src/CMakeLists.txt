@@ -10,9 +10,12 @@ message(STATUS "CURSES_INCLUDE_DIRS:${CURSES_INCLUDE_DIRS}")
 
 find_package(check 0.12.0 REQUIRED CONFIG)
 
+add_library(test_suite test_suite.c)
+target_link_libraries(test_suite Check::check)
+
+
 add_executable(check.test check.test.c)
-# target_include_directories(check.test PUBLIC ${check_INCLUDE_DIRS})
-target_link_libraries(check.test Check::check)
+target_link_libraries(check.test test_suite)
 add_test(NAME Check COMMAND check.test)
 
 
