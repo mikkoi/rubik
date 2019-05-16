@@ -8,7 +8,10 @@ message(STATUS "CURSES_INCLUDE_DIRS:${CURSES_INCLUDE_DIRS}")
 # target_include_directories(testncurses PUBLIC ${CURSES_INCLUDE_DIRS})
 # target_link_libraries(testncurses ${CURSES_LIBRARIES})
 
-find_package(check 0.12.0 REQUIRED CONFIG)
+find_package(check 0.12.0 REQUIRED MODULE)
+message(STATUS "check_FOUND:${check_FOUND}")
+message(STATUS "check_LIBRARIES:${check_LIBRARIES}")
+message(STATUS "check_INCLUDE_DIRS:${check_INCLUDE_DIRS}")
 
 add_library(test_suite test_suite.c)
 target_link_libraries(test_suite Check::check)
