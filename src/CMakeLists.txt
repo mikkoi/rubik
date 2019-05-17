@@ -9,12 +9,14 @@ message(STATUS "CURSES_INCLUDE_DIRS:${CURSES_INCLUDE_DIRS}")
 # target_link_libraries(testncurses ${CURSES_LIBRARIES})
 
 find_package(check 0.12.0 REQUIRED MODULE)
-message(STATUS "check_FOUND:${check_FOUND}")
-message(STATUS "check_LIBRARIES:${check_LIBRARIES}")
-message(STATUS "check_INCLUDE_DIRS:${check_INCLUDE_DIRS}")
+# find_package(check 0.9.0 REQUIRED MODULE)
 
 add_library(test_suite test_suite.c)
-target_link_libraries(test_suite Check::check)
+# target_link_libraries(test_suite PUBLIC ${check_LIBRARIES})
+target_link_libraries(test_suite PUBLIC check::check)
+# target_include_directories(test_suite PUBLIC ${check_INCLUDE_DIRS})
+# target_compile_definitions(test_suite PUBLIC ${check_DEFINITIONS})
+# target_compile_options(test_suite PUBLIC ${check_OPTIONS})
 
 
 add_executable(check.test check.test.c)

@@ -28,6 +28,10 @@ This will define the following variables:
   Include directories needed to use check.
 ``check_LIBRARIES``
   Libraries needed to link to check.
+``check_DEFINITIONS``
+  Definitions to use when compiling code that uses check.
+``check_OPTIONS``
+  Options to use when compiling code that uses check.
 
 The following obsolete variables will also be defined
 to retain compatibility.
@@ -58,21 +62,19 @@ find_path(check_INCLUDE_DIR
   PATH_SUFFIXES check
 )
 find_library(check_LIBRARY
-  NAMES foo
+  NAMES check
   PATHS ${PC_check_LIBRARY_DIRS}
 )
 
+set(RX_WS "[ \t\r\n]")
 file(READ "${check_INCLUDE_DIR}/check.h" check_HEADER)
-# message(STATUS "check_HEADER:${check_HEADER}")
-string(REGEX MATCH "#define[ \t\r\n]+CHECK_MAJOR_VERSION[ \t\r\n]+\\(0\\)" check_MAJOR_VERSION_A ${check_HEADER})
-# string(REGEX MATCH ".*^#define CHECK_MAJOR_VERSION \([0-9]+\)$.*" check_MAJOR_VERSION_A ${check_HEADER})
-message(STATUS "check_MAJOR_VERSION:${check_MAJOR_VERSION_A}")
+string(REGEX MATCH "#define${RX_WS}+CHECK_MAJOR_VERSION${RX_WS}+\\(([0-9]+)\\)" check_MAJOR_VERSION_A ${check_HEADER})
 set(check_MAJOR_VERSION ${CMAKE_MATCH_1})
-# string(REGEX MATCH "#define CHECK_MINOR_VERSION \([0-9]+\)" check_MINOR_VERSION_A ${check_HEADER})
-# message(STATUS "check_MINOR_VERSION:${check_MINOR_VERSION_A}")
-# string(REGEX MATCH "#define CHECK_MICRO_VERSION \([0-9]+\)" check_MICRO_VERSION_A ${check_HEADER})
+string(REGEX MATCH "#define${RX_WS}+CHECK_MINOR_VERSION${RX_WS}+\\(([0-9]+)\\)" check_MINOR_VERSION_A ${check_HEADER})
+set(check_MINOR_VERSION ${CMAKE_MATCH_1})
+string(REGEX MATCH "#define${RX_WS}+CHECK_MICRO_VERSION${RX_WS}+\\(([0-9]+)\\)" check_MICRO_VERSION_A ${check_HEADER})
+set(check_MICRO_VERSION ${CMAKE_MATCH_1})
 set(check_VERSION "${check_MAJOR_VERSION}.${check_MINOR_VERSION}.${check_MICRO_VERSION}")
-message(STATUS "check_VERSION:${check_VERSION}")
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(check
@@ -87,10 +89,19 @@ find_package_handle_standard_args(check
 if(check_FOUND)
   set(check_LIBRARIES ${check_LIBRARY})
   set(check_INCLUDE_DIRS ${check_INCLUDE_DIR})
-  set(check_DEFINITIONS ${PC_check_CFLAGS_OTHER})
+  set(check_DEFINITIONS "")
+  set(check_OPTIONS ${PC_check_CFLAGS_OTHER})
 endif()
 
-
+# Provide imported target
+if(check_FOUND AND NOT TARGET check::check)
+  add_library(check::check UNKNOWN IMPORTED)
+  set_target_properties(check::check PROPERTIES
+    IMPORTED_LOCATION "${check_LIBRARY}"
+    INTERFACE_COMPILE_OPTIONS "${PC_check_CFLAGS_OTHER}"
+    INTERFACE_INCLUDE_DIRECTORIES "${check_INCLUDE_DIR}"
+  )
+endif()
 
 # compatibility variables (more exported variables)
 set(CHECK_FOUND ${check_FOUND})
