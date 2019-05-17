@@ -2,36 +2,36 @@
 # file Copyright.txt or https://cmake.org/licensing for details.
 
 #[=======================================================================[.rst:
-Findcheck
+FindCheck
 ---------
 
-Find the check library (C language Unit Test library).
+Find the Check library (C language Unit Test library).
 
 Imported Targets
 ^^^^^^^^^^^^^^^^
 
 This module provides the following imported targets, if found:
 
-``check::check``
-  The check library
+``Check::check``
+  The Check library
 
 Result Variables
 ^^^^^^^^^^^^^^^^
 
 This will define the following variables:
 
-``check_FOUND``
-  True if the system has the check library.
-``check_VERSION``
-  The version of the check library which was found.
-``check_INCLUDE_DIRS``
-  Include directories needed to use check.
-``check_LIBRARIES``
-  Libraries needed to link to check.
-``check_DEFINITIONS``
-  Definitions to use when compiling code that uses check.
-``check_OPTIONS``
-  Options to use when compiling code that uses check.
+``Check_FOUND``
+  True if the system has the Check library.
+``Check_VERSION``
+  The version of the Check library which was found.
+``Check_INCLUDE_DIRS``
+  Include directories needed to use Check.
+``Check_LIBRARIES``
+  Libraries needed to link to Check.
+``Check_DEFINITIONS``
+  Definitions to use when compiling code that uses Check.
+``Check_OPTIONS``
+  Options to use when compiling code that uses Check.
 
 The following obsolete variables will also be defined
 to retain compatibility.
@@ -46,66 +46,66 @@ Cache Variables
 
 The following cache variables may also be set:
 
-``check_INCLUDE_DIR``
+``Check_INCLUDE_DIR``
   The directory containing ``cache.h``.
-``check_LIBRARY``
-  The path to the check library.
+``Check_LIBRARY``
+  The path to the Check library.
 
 #]=======================================================================]
 
 find_package(PkgConfig)
 pkg_check_modules(PC_check QUIET check)
 
-find_path(check_INCLUDE_DIR
+find_path(Check_INCLUDE_DIR
   NAMES check.h
-  PATHS ${PC_check_INCLUDE_DIRS}
+  PATHS ${PC_Check_INCLUDE_DIRS}
   PATH_SUFFIXES check
 )
-find_library(check_LIBRARY
+find_library(Check_LIBRARY
   NAMES check
-  PATHS ${PC_check_LIBRARY_DIRS}
+  PATHS ${PC_Check_LIBRARY_DIRS}
 )
 
 set(RX_WS "[ \t\r\n]")
-file(READ "${check_INCLUDE_DIR}/check.h" check_HEADER)
-string(REGEX MATCH "#define${RX_WS}+CHECK_MAJOR_VERSION${RX_WS}+\\(([0-9]+)\\)" check_MAJOR_VERSION_A ${check_HEADER})
-set(check_MAJOR_VERSION ${CMAKE_MATCH_1})
-string(REGEX MATCH "#define${RX_WS}+CHECK_MINOR_VERSION${RX_WS}+\\(([0-9]+)\\)" check_MINOR_VERSION_A ${check_HEADER})
-set(check_MINOR_VERSION ${CMAKE_MATCH_1})
-string(REGEX MATCH "#define${RX_WS}+CHECK_MICRO_VERSION${RX_WS}+\\(([0-9]+)\\)" check_MICRO_VERSION_A ${check_HEADER})
-set(check_MICRO_VERSION ${CMAKE_MATCH_1})
-set(check_VERSION "${check_MAJOR_VERSION}.${check_MINOR_VERSION}.${check_MICRO_VERSION}")
+file(READ "${Check_INCLUDE_DIR}/check.h" Check_HEADER)
+string(REGEX MATCH "#define${RX_WS}+CHECK_MAJOR_VERSION${RX_WS}+\\(([0-9]+)\\)" Check_MAJOR_VERSION_A ${Check_HEADER})
+set(Check_MAJOR_VERSION ${CMAKE_MATCH_1})
+string(REGEX MATCH "#define${RX_WS}+CHECK_MINOR_VERSION${RX_WS}+\\(([0-9]+)\\)" Check_MINOR_VERSION_A ${Check_HEADER})
+set(Check_MINOR_VERSION ${CMAKE_MATCH_1})
+string(REGEX MATCH "#define${RX_WS}+CHECK_MICRO_VERSION${RX_WS}+\\(([0-9]+)\\)" Check_MICRO_VERSION_A ${Check_HEADER})
+set(Check_MICRO_VERSION ${CMAKE_MATCH_1})
+set(Check_VERSION "${check_MAJOR_VERSION}.${Check_MINOR_VERSION}.${Check_MICRO_VERSION}")
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(check
-  FOUND_VAR check_FOUND
+find_package_handle_standard_args(Check
+  FOUND_VAR Check_FOUND
   REQUIRED_VARS
-    check_LIBRARY
-    check_INCLUDE_DIR
-  VERSION_VAR check_VERSION
+    Check_LIBRARY
+    Check_INCLUDE_DIR
+  VERSION_VAR Check_VERSION
 )
 
 # Exported variables
-if(check_FOUND)
-  set(check_LIBRARIES ${check_LIBRARY})
-  set(check_INCLUDE_DIRS ${check_INCLUDE_DIR})
-  set(check_DEFINITIONS "")
-  set(check_OPTIONS ${PC_check_CFLAGS_OTHER})
+if(Check_FOUND)
+  set(Check_LIBRARIES ${Check_LIBRARY})
+  set(Check_INCLUDE_DIRS ${Check_INCLUDE_DIR})
+  set(Check_DEFINITIONS "")
+  set(Check_OPTIONS ${PC_Check_CFLAGS_OTHER})
 endif()
 
 # Provide imported target
-if(check_FOUND AND NOT TARGET check::check)
-  add_library(check::check UNKNOWN IMPORTED)
-  set_target_properties(check::check PROPERTIES
-    IMPORTED_LOCATION "${check_LIBRARY}"
-    INTERFACE_COMPILE_OPTIONS "${PC_check_CFLAGS_OTHER}"
-    INTERFACE_INCLUDE_DIRECTORIES "${check_INCLUDE_DIR}"
+if(Check_FOUND AND NOT TARGET Check::check)
+  add_library(Check::check UNKNOWN IMPORTED)
+  set_target_properties(Check::check PROPERTIES
+    IMPORTED_LOCATION "${Check_LIBRARY}"
+    INTERFACE_COMPILE_OPTIONS "${PC_Check_CFLAGS_OTHER}"
+    INTERFACE_INCLUDE_DIRECTORIES "${Check_INCLUDE_DIR}"
   )
 endif()
 
 # compatibility variables (more exported variables)
-set(CHECK_FOUND ${check_FOUND})
-set(CHECK_INCLUDE_DIR ${check_INCLUDE_DIRS})
-set(CHECK_LIBRARIES ${check_LIBRARIES})
+set(CHECK_FOUND ${Check_FOUND})
+set(CHECK_INCLUDE_DIR ${Check_INCLUDE_DIRS})
+set(CHECK_LIBRARIES ${Check_LIBRARIES})
 
 
