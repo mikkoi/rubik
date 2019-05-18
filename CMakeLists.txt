@@ -30,6 +30,7 @@ if(Cppcheck_FOUND)
                 --std=c89
                 --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
                 --verbose --quiet --inline-suppr
+                # --check-config
                 ${src}
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             COMMENT "Running Cppcheck on ${src}."
