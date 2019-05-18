@@ -3,7 +3,7 @@ set(CURSES_NEED_NCURSES BOOL TRUE)
 set(CURSES_NEED_WIDE BOOL TRUE)
 include(FindCurses REQUIRED)
 
-message(STATUS "CURSES_INCLUDE_DIRS:${CURSES_INCLUDE_DIRS}")
+# message(STATUS "CURSES_INCLUDE_DIRS:${CURSES_INCLUDE_DIRS}")
 # add_executable(testncurses testncurses.c)
 # target_include_directories(testncurses PUBLIC ${CURSES_INCLUDE_DIRS})
 # target_link_libraries(testncurses ${CURSES_LIBRARIES})
