@@ -3,8 +3,8 @@ cmake_policy(SET CMP0048 NEW) # project() command manages VERSION vars
 cmake_policy(SET CMP0074 NEW) # Use <PackageName>_ROOT variables
 project( "Rubik"
     VERSION 0.0.0.1
-    DESCRIPTION "C (and some C++) exercises from C-Ohjelmointikieli (OtaData), Modern C and other sources."
-    LANGUAGES C CXX)
+    DESCRIPTION "Simulate Rubik's cube"
+    LANGUAGES C)
 include(CTest)
 enable_testing()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -15,9 +15,29 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 
 # find_package(Cppcheck)
-# if(CPPCHECK_FOUND)
-#     include(cppcheck.cmake)
-# endif(CPPCHECK_FOUND)
+
+if(Cppcheck_FOUND)
+    function(add_executable bin src)
+        message(STATUS "add executable '${src}' for checking with Cppcheck.")
+        _add_executable(${bin} ${src})
+        get_property(THESE_INCLUDES TARGET ${bin} PROPERTY INCLUDE_DIRECTORIES)
+        # message(STATUS "${THESE_INCLUDES}")
+        add_custom_command(
+            TARGET ${bin}
+            PRE_BUILD
+            COMMAND
+                cppcheck --enable=all --language=c
+                --std=c89
+                --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
+                --verbose --quiet --inline-suppr
+                ${src}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            COMMENT "Running Cppcheck on ${src}."
+            # VERBATIM
+            USES_TERMINAL
+        )
+    endfunction()
+endif(Cppcheck_FOUND)
 
 string(APPEND C_AND_CXX_COMPILER_FLAGS
     " -Wall"

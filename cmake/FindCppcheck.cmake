@@ -1,12 +1,12 @@
 find_program(
-    CPPCHECK_EXECUTABLE
+    Cppcheck_EXECUTABLE
     NAMES cppcheck
     DOC "Cppcheck static analysis tool (http://cppcheck.sourceforge.net)"
     )
 
-if (CPPCHECK_EXECUTABLE)
+if (Cppcheck_EXECUTABLE)
     execute_process(
-        COMMAND ${CPPCHECK_EXECUTABLE} --version
+        COMMAND ${Cppcheck_EXECUTABLE} --version
         OUTPUT_VARIABLE cppcheck_version_out
         RESULT_VARIABLE cppcheck_version_error
         ERROR_VARIABLE cppcheck_version_suppress
@@ -18,11 +18,11 @@ if (CPPCHECK_EXECUTABLE)
 endif ()
 
 if (cppcheck_version)
-    set(CPPCHECK_FOUND 1 CACHE INTERNAL "Cppcheck version ${cppcheck_version} found")
+    set(Cppcheck_FOUND 1 CACHE INTERNAL "Cppcheck version ${cppcheck_version} found")
 endif ()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Cppcheck
-    REQUIRED_VARS CPPCHECK_EXECUTABLE
+    REQUIRED_VARS Cppcheck_EXECUTABLE
     VERSION_VAR cppcheck_version)
 
