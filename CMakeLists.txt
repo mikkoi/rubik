@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
 cmake_policy(SET CMP0048 NEW) # project() command manages VERSION vars
 cmake_policy(SET CMP0074 NEW) # Use <PackageName>_ROOT variables
 project( "Rubik"
     VERSION 0.0.0.1
-    # DESCRIPTION "C (and some C++) exercises from C-Ohjelmointikieli (OtaData), Modern C and other sources."
+    DESCRIPTION "C (and some C++) exercises from C-Ohjelmointikieli (OtaData), Modern C and other sources."
     LANGUAGES C CXX)
 include(CTest)
 enable_testing()
