@@ -60,7 +60,8 @@ void TurnSquare90DegreesAntiClockWise(struct Rubik* const r, R_square const sqr)
     TurnSquare90Degrees(r, sqr);
 }
 
-void TurnColumn(struct Rubik* const r, R_turn const t) {
+/* Turning is always towards left */
+static void TurnRow(struct Rubik* const r, R_turn const t) {
     assert(Turn_Row_1 == t || Turn_Row_2 == t || Turn_Row_3 == t);
     R_colour tmp[3] = { 0 };
     R_row row = (R_row) t - 3;
@@ -83,48 +84,66 @@ void TurnColumn(struct Rubik* const r, R_turn const t) {
     PutColour(r, Sqr_5, row, Col_2, tmp[Col_2]);
     PutColour(r, Sqr_5, row, Col_3, tmp[Col_3]);
 }
-void TurnColumnLeft(struct Rubik* const r, R_turn const t) {
-    TurnColumn(r, t);
+void TurnRowLeft(struct Rubik* const r, R_turn const t) {
+    TurnRow(r, t);
 }
-void TurnColumnRight(struct Rubik* const r, R_turn const t) {
-    TurnColumn(r, t);
-    TurnColumn(r, t);
-    TurnColumn(r, t);
+void TurnRowRight(struct Rubik* const r, R_turn const t) {
+    TurnRow(r, t);
+    TurnRow(r, t);
+    TurnRow(r, t);
 }
 
-void TurnRow(struct Rubik* const r, R_turn const t) {
+/* Turning is always upwards */
+static void TurnColumn(struct Rubik* const r, R_turn const t) {
     assert(Turn_Col_1 == t || Turn_Col_2 == t || Turn_Col_3 == t);
     R_colour tmp[3] = { 0 };
     R_column col = (R_column) t;
+    assert(Col_1 == col || Col_2 == col || Col_3 == col);
 
     /* the order of copy is: tmp <- Sqr_1 <- Sqr_3 <- Sqr_6 <- Sqr_5 <- tmp */
-    tmp[Row_1] = GetColour(r, Sqr_1, col, Row_1);
-    tmp[Row_2] = GetColour(r, Sqr_1, col, Row_2);
-    tmp[Row_3] = GetColour(r, Sqr_1, col, Row_3);
+    tmp[Row_1] = GetColour(r, Sqr_1, Row_1, col);
+    tmp[Row_2] = GetColour(r, Sqr_1, Row_2, col);
+    tmp[Row_3] = GetColour(r, Sqr_1, Row_3, col);
 
-    PutColour(r, Sqr_1, col, Row_1, GetColour(r, Sqr_3, col, Row_1));
-    PutColour(r, Sqr_1, col, Row_2, GetColour(r, Sqr_3, col, Row_2));
-    PutColour(r, Sqr_1, col, Row_3, GetColour(r, Sqr_3, col, Row_3));
+    PutColour(r, Sqr_1, Row_1, col, GetColour(r, Sqr_3, Row_1, col));
+    PutColour(r, Sqr_1, Row_2, col, GetColour(r, Sqr_3, Row_2, col));
+    PutColour(r, Sqr_1, Row_3, col, GetColour(r, Sqr_3, Row_3, col));
 
-    PutColour(r, Sqr_3, col, Row_1, GetColour(r, Sqr_6, col, Row_1));
-    PutColour(r, Sqr_3, col, Row_2, GetColour(r, Sqr_6, col, Row_2));
-    PutColour(r, Sqr_3, col, Row_3, GetColour(r, Sqr_6, col, Row_3));
+    PutColour(r, Sqr_3, Row_1, col, GetColour(r, Sqr_6, Row_1, col));
+    PutColour(r, Sqr_3, Row_2, col, GetColour(r, Sqr_6, Row_2, col));
+    PutColour(r, Sqr_3, Row_3, col, GetColour(r, Sqr_6, Row_3, col));
     
-    PutColour(r, Sqr_6, col, Row_1, GetColour(r, Sqr_5, col, Row_1));
-    PutColour(r, Sqr_6, col, Row_2, GetColour(r, Sqr_5, col, Row_2));
-    PutColour(r, Sqr_6, col, Row_3, GetColour(r, Sqr_5, col, Row_3));
-
-    PutColour(r, Sqr_5, col, Row_1, tmp[Row_1]);
-    PutColour(r, Sqr_5, col, Row_2, tmp[Row_2]);
-    PutColour(r, Sqr_5, col, Row_3, tmp[Row_3]);
+    /* Sqr_5 is upside down, look at picture in core.h */
+    if(Col_1 == col) {
+        PutColour(r, Sqr_6, Row_1, Col_1, GetColour(r, Sqr_5, Row_3, Col_3));
+        PutColour(r, Sqr_6, Row_2, Col_1, GetColour(r, Sqr_5, Row_2, Col_3));
+        PutColour(r, Sqr_6, Row_3, Col_1, GetColour(r, Sqr_5, Row_1, Col_3));
+        PutColour(r, Sqr_5, Row_3, Col_3, tmp[Row_1]);
+        PutColour(r, Sqr_5, Row_2, Col_3, tmp[Row_2]);
+        PutColour(r, Sqr_5, Row_1, Col_3, tmp[Row_3]);
+    } else if(Col_3 == col) {
+        PutColour(r, Sqr_6, Row_1, Col_3, GetColour(r, Sqr_5, Row_3, Col_1));
+        PutColour(r, Sqr_6, Row_2, Col_3, GetColour(r, Sqr_5, Row_2, Col_1));
+        PutColour(r, Sqr_6, Row_3, Col_3, GetColour(r, Sqr_5, Row_1, Col_1));
+        PutColour(r, Sqr_5, Row_3, Col_1, tmp[Row_1]);
+        PutColour(r, Sqr_5, Row_2, Col_1, tmp[Row_2]);
+        PutColour(r, Sqr_5, Row_1, Col_1, tmp[Row_3]);
+    } else /* Col_2 == col */ {
+        PutColour(r, Sqr_6, Row_1, Col_2, GetColour(r, Sqr_5, Row_3, Col_2));
+        PutColour(r, Sqr_6, Row_2, Col_2, GetColour(r, Sqr_5, Row_2, Col_2));
+        PutColour(r, Sqr_6, Row_3, Col_2, GetColour(r, Sqr_5, Row_1, Col_2));
+        PutColour(r, Sqr_5, Row_3, Col_2, tmp[Row_1]);
+        PutColour(r, Sqr_5, Row_2, Col_2, tmp[Row_2]);
+        PutColour(r, Sqr_5, Row_1, Col_2, tmp[Row_3]);
+    }
 }
-void TurnRowUp(struct Rubik* const r, R_turn const t) {
-    TurnRow(r, t);
+void TurnColumnUp(struct Rubik* const r, R_turn const t) {
+    TurnColumn(r, t);
 }
-void TurnRowDown(struct Rubik* const r, R_turn const t) {
-    TurnRow(r, t);
-    TurnRow(r, t);
-    TurnRow(r, t);
+void TurnColumnDown(struct Rubik* const r, R_turn const t) {
+    TurnColumn(r, t);
+    TurnColumn(r, t);
+    TurnColumn(r, t);
 }
 
 struct Rubik* CreateRubik(size_t const len) {
@@ -151,25 +170,25 @@ void DiscardRubik(struct Rubik *rubik) {
 void TurnRubik(struct Rubik* const r, R_turn const t, R_dir const d) {
     /* R_row const row, R_column const col,  */
     if(Left == d) {
-        TurnColumnLeft(r, t);
+        TurnRowLeft(r, t);
         if(Turn_Col_1 == t || Turn_Col_3 == t) { /* Turn the edge squares */
             TurnSquare90DegreesClockWise(r, Sqr_1);
             TurnSquare90DegreesAntiClockWise(r, Sqr_6);
         }
     } else if(Right == d) {
-        TurnColumnRight(r, t);
+        TurnRowRight(r, t);
         if(Turn_Col_1 == t || Turn_Col_3 == t) {
             TurnSquare90DegreesAntiClockWise(r, Sqr_1);
             TurnSquare90DegreesClockWise(r, Sqr_6);
         }
     } else if(Up == d) {
-        TurnRowUp(r, t);
+        TurnColumnUp(r, t);
         if(Turn_Row_1 == t || Turn_Row_3 == t) {
             TurnSquare90DegreesAntiClockWise(r, Sqr_2);
             TurnSquare90DegreesClockWise(r, Sqr_4);
         }
     } else if(Down == d) {
-        TurnRowDown(r, t);
+        TurnColumnDown(r, t);
         if(Turn_Row_1 == t || Turn_Row_3 == t) {
             TurnSquare90DegreesClockWise(r, Sqr_2);
             TurnSquare90DegreesAntiClockWise(r, Sqr_4);

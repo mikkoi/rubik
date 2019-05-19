@@ -42,6 +42,10 @@ void PutColour(struct Rubik* const r, R_square const square, R_row const row, R_
 void FillSquareWithColour(struct Rubik* const r, R_square const sqr, R_colour const c);
 void TurnSquare90DegreesClockWise(struct Rubik* const r, R_square const sqr);
 void TurnSquare90DegreesAntiClockWise(struct Rubik* const r, R_square const sqr);
+void TurnRowLeft(struct Rubik* const r, R_turn const t);
+void TurnRowRight(struct Rubik* const r, R_turn const t);
+void TurnColumnUp(struct Rubik* const r, R_turn const t);
+void TurnColumnDown(struct Rubik* const r, R_turn const t);
 
 /**
  * Get an individual colour.
