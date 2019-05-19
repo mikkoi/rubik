@@ -1,6 +1,6 @@
 [requires]
 # API to write text-based user interfaces, TUIs in a terminal.
-ncurses/6.1@conan/stable
+#ncurses/6.1@conan/stable
 
 [generators]
 cmake
