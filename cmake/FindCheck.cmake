@@ -46,6 +46,9 @@ Cache Variables
 
 The following cache variables may also be set:
 
+``Check_ROOT``
+  The directory containing Check installation, i.e.
+  containing dirs ``include`` and ``lib``.
 ``Check_INCLUDE_DIR``
   The directory containing ``cache.h``.
 ``Check_LIBRARY``
@@ -53,18 +56,23 @@ The following cache variables may also be set:
 
 #]=======================================================================]
 
-find_package(PkgConfig)
-pkg_check_modules(PC_check QUIET check)
+if(Check_ROOT)
+    set(Check_INCLUDE_DIR ${Check_ROOT}/include)
+    set(Check_LIBRARY ${Check_ROOT}/lib/libcheck.so)
+else()
+    find_package(PkgConfig)
+    pkg_check_modules(PC_check QUIET check)
 
-find_path(Check_INCLUDE_DIR
-  NAMES check.h
-  PATHS ${PC_Check_INCLUDE_DIRS}
-  PATH_SUFFIXES check
-)
-find_library(Check_LIBRARY
-  NAMES check
-  PATHS ${PC_Check_LIBRARY_DIRS}
-)
+    find_path(Check_INCLUDE_DIR
+      NAMES check.h
+      PATHS ${PC_Check_INCLUDE_DIRS}
+      PATH_SUFFIXES check
+    )
+    find_library(Check_LIBRARY
+      NAMES check
+      PATHS ${PC_Check_LIBRARY_DIRS}
+    )
+endif()
 
 set(RX_WS "[ \t\r\n]")
 file(READ "${Check_INCLUDE_DIR}/check.h" Check_HEADER)
