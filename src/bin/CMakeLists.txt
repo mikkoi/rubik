@@ -23,4 +23,7 @@ target_link_libraries(ncurses_example7 PRIVATE ${CURSES_LIBRARIES})
 add_executable(ncurses_example9 ncurses_example9.c)
 target_link_libraries(ncurses_example9 PRIVATE ${CURSES_LIBRARIES})
 
+add_executable(ncurses_example13 ncurses_example13.c)
+target_link_libraries(ncurses_example13 PRIVATE ${CURSES_LIBRARIES})
+
 
