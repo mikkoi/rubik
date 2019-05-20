@@ -23,6 +23,7 @@ int main(int argc, char *argv[argc+2])
 	cbreak();			    /* Line buffering disabled, Pass on everty thing to me */
 	keypad(stdscr, TRUE);	/* I need that nifty F1 	*/
     curs_set(0);            /* Make cursor invisible    */
+    noecho();
 	if(!has_colors())
 	{	endwin();
 		printf("Your terminal does not support color\n");
@@ -75,7 +76,7 @@ WINDOW *create_newwin(int height, int width, int starty, int startx)
 					 * lines			*/
     /* mvwprintw(local_win, starty, startx,  */
     move(++starty, ++startx);
-    for(size_t i = width - 2; i > 0; --i)
+    for(int i = width - 2; i > 0; --i)
         addch(' ' | COLOR_PAIR(BOX_COLOR_PAIR));
     move(LINES, COLS);
 	wrefresh(local_win);		/* Show that box 		*/
