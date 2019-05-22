@@ -74,6 +74,7 @@ static void DrawRubikSide(WINDOW* win) {
     /* wprintw(win, "├───┼───┼───┤" "\n"); */
     /* wprintw(win, "│   │   │   │" "\n"); */
     /* wprintw(win, "└───┴───┴───┘" "\n"); */
+    /* Printing simply like above won't work because this file is UTF-8. */
     waddch(win, ACS_ULCORNER);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_TTEE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_TTEE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_URCORNER);
 
     waddch(win, ACS_VLINE); waddch(win, ' '); waddch(win, ' '); waddch(win, ' '); waddch(win, ACS_VLINE); waddch(win, ' '); waddch(win, ' '); waddch(win, ' '); waddch(win, ACS_VLINE); waddch(win, ' '); waddch(win, ' '); waddch(win, ' '); waddch(win, ACS_VLINE);
@@ -98,6 +99,9 @@ int ncurses_run(void) {
     }
     start_color();            /* Start color             */
     init_pair(1, COLOR_RED, COLOR_BLACK);
+    cbreak();
+    noecho();
+    curs_set(0); /* Invisible cursor */
 
     attron(COLOR_PAIR(1));
     print_in_middle(stdscr, LINES / 2, 0, 0, "Viola !!! In color ...");
@@ -112,3 +116,4 @@ int ncurses_run(void) {
     endwin();
     return RUBIK_NCURSES_EXIT_SUCCESS;
 }
+
