@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "../domain/core.h"
+
 #define RUBIK_NCURSES_EXIT_SUCCESS 1
 #define RUBIK_NCURSES_NO_COLOR -1
 
@@ -28,28 +30,6 @@ static void print_in_middle(WINDOW *win, int starty, int startx, int width, char
 	mvwprintw(win, y, x, "%s", string);
     mvwvline(win, y+3, x, 0, 10);
 	refresh();
-    /* int win_lines = 3; */
-    /* int win_cols = 5; */
-    /* int pos_line = 0; */
-    /* int pos_col = 0; */
-    /* WINDOW* wins[9] = { (void*) 0 }; */
-    /* wins[0] = newwin(win_lines, win_cols, pos_line, pos_col); */
-    /* wins[1] = newwin(win_lines, win_cols, pos_line += 5, pos_col += 3); */
-    /* wins[2] = newwin(win_lines, win_cols, pos_line += 5, pos_col += 3); */
-    /* wins[3] = newwin(win_lines, win_cols, pos_line += 5, pos_col += 3); */
-    /* wins[4] = newwin(win_lines, win_cols, pos_line += 5, pos_col += 3); */
-    /* wins[5] = newwin(win_lines, win_cols, pos_line += 5, pos_col += 3); */
-    /* wins[6] = newwin(win_lines, win_cols, pos_line += 5, pos_col += 3); */
-    /* wins[7] = newwin(win_lines, win_cols, pos_line += 5, pos_col += 3); */
-    /* wins[8] = newwin(win_lines, win_cols, pos_line += 5, pos_col += 3); */
-    /* for(int i = 0; i < 9; ) { */
-    /*     for(int j = 0; j < 3; ++i, ++j) { */
-    /*         wins[i] = newwin(win_lines, win_cols, pos_line, pos_col += 4); */
-    /*         box(wins[i], 0, 0); */
-    /*         wrefresh(wins[i]); */
-    /*     } */
-    /*     pos_line += 3; */
-    /* } */
 }
 
 static void DrawRubikSide(WINDOW* win) {
@@ -90,6 +70,24 @@ static void DrawRubikSide(WINDOW* win) {
     waddch(win, ACS_LLCORNER);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_BTEE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_BTEE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_LRCORNER);
 }
 
+static void RubikCreateColorPairs() {
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+}
+static void ColorRubikSide(WINDOW* win, R_colour(*side)[]) {
+    /* wprintw(win, "┌───┬───┬───┐" "\n"); */
+    /* wprintw(win, "│   │   │   │" "\n"); */
+    /* wprintw(win, "├───┼───┼───┤" "\n"); */
+    /* wprintw(win, "│   │   │   │" "\n"); */
+    /* wprintw(win, "├───┼───┼───┤" "\n"); */
+    /* wprintw(win, "│   │   │   │" "\n"); */
+    /* wprintw(win, "└───┴───┴───┘" "\n"); */
+
+
+	mvwprintw(win, y, x, "%s", string);
+    mvwvline(win, y+3, x, 0, 10);
+	refresh();
+}
+
 int ncurses_run(void) {
     initscr();            /* Start curses mode         */
     if(has_colors() == FALSE) {
@@ -97,21 +95,28 @@ int ncurses_run(void) {
         fprintf(stderr, "Your terminal does not support color\n");
         return RUBIK_NCURSES_NO_COLOR;
     }
-    start_color();            /* Start color             */
-    init_pair(1, COLOR_RED, COLOR_BLACK);
+    start_color();
+    /* init_pair(1, COLOR_RED, COLOR_BLACK); */
     cbreak();
     noecho();
     curs_set(0); /* Invisible cursor */
 
-    attron(COLOR_PAIR(1));
-    print_in_middle(stdscr, LINES / 2, 0, 0, "Viola !!! In color ...");
-    attroff(COLOR_PAIR(1));
-    int pos_line = 5;
-    int pos_col = 0;
+	mvwprintw(stdscr, 0, 0, "%s", "RUBIK");
+    /* attron(COLOR_PAIR(1)); */
+    /* print_in_middle(stdscr, LINES / 2, 0, 0, "Viola !!! In color ..."); */
+    /* attroff(COLOR_PAIR(1)); */
+    refresh();
+    int pos_line = 2;
+    int pos_col = -13;
     WINDOW* wins[6] = { (void*) 0 };
-    wins[0] = newwin(7, 13, pos_line, pos_col);
-    DrawRubikSide(wins[0]);
-    wrefresh(wins[0]);
+    wins[0] = newwin(7, 13, pos_line, 13);
+    for(size_t i = 1; i < 5; ++i)
+        wins[i] = newwin(7, 13, pos_line + 7, pos_col += 13);
+    wins[5] = newwin(7, 13, pos_line + 14, 13);
+    for(size_t i = 0; i < 6; ++i) {
+        DrawRubikSide(wins[i]);
+        wrefresh(wins[i]);
+    }
     getch();
     endwin();
     return RUBIK_NCURSES_EXIT_SUCCESS;

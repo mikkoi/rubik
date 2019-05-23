@@ -6,7 +6,7 @@
  * The colours of the Rubik's cube.
  */
 typedef enum {
-    White, Red, Blue, Orange, Green, Yellow
+    White = 0, Red, Blue, Orange, Green, Yellow, Last
         /* W, R, B, O, G, Y */
 } R_colour;
 
