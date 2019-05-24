@@ -19,7 +19,7 @@ START_TEST (second_idiotic_test) {
 }
 END_TEST
 
-void add_tests(size_t const n, void const* tests[n]) {
+void add_tests(size_t const n, void (* tests[n])(int)) {
     assert(n > 0);
     tests[0] = idiotic_test;
     tests[1] = second_idiotic_test;
