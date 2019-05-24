@@ -3,10 +3,11 @@
 #include "test_suite.h"
 
 /* https://stackoverflow.com/questions/1143262/what-is-the-difference-between-const-int-const-int-const-and-int-const */
+
 Suite * test_suite(void) {
     Suite *s;
     TCase *tc_core;
-    void (* tests[MAX_TESTS_IN_SUITE])(int) = { 0 };
+    TFun tests[MAX_TESTS_IN_SUITE] = { 0 };
     add_tests(MAX_TESTS_IN_SUITE, tests);
 
     s = suite_create("Rubik");
@@ -15,7 +16,7 @@ Suite * test_suite(void) {
     tc_core = tcase_create("Core");
 
     for(size_t i = 0; i < MAX_TESTS_IN_SUITE; ++i) {
-        void (* const test)(int) = tests[i];
+        TFun test = tests[i];
         if(test) {
             tcase_add_test(tc_core, test);
         }

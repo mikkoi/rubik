@@ -636,7 +636,7 @@ START_TEST (testFillSquareWithColour) {
 END_TEST
 
 // cppcheck-suppress unusedFunction
-void add_tests(size_t const n, void (* tests[n])(int)) {
+void add_tests(size_t const n, TFun tests[n]) {
     assert(n > 0);
     tests[0] = testCreateRubik;
     tests[1] = testTurnSquare90Degrees;
