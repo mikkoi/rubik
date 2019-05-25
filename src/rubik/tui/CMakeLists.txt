@@ -5,5 +5,5 @@ include(FindCurses REQUIRED)
 include_directories(BEFORE ${CURSES_INCLUDE_DIRS})
 
 add_library(rubik_ncurses rubik_ncurses.c)
-target_link_libraries(rubik_ncurses PRIVATE ${CURSES_LIBRARIES})
+target_link_libraries(rubik_ncurses PRIVATE core ${CURSES_LIBRARIES})
 

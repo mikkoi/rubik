@@ -5,8 +5,16 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <assert.h>
 #include "core.h"
+
+char const * R_dir_strings[5] = {
+    "Left", "Right", "Up", "Down", "NoDir"
+};
+char const * R_dir_as_string(R_dir const dir) {
+    return R_dir_strings[dir];
+}
 
 void PutColour(struct Rubik* const r, R_square const square, R_row const row, R_column const col, R_colour const colour) {
     r->con[square][row][col] = colour;
@@ -70,7 +78,7 @@ static void TurnRow(struct Rubik* const r, R_turn const t) {
     tmp[Col_3] = GetColour(r, Sqr_2, row, Col_3);
     PutColour(r, Sqr_2, row, Col_1, GetColour(r, Sqr_3, row, Col_1));
     PutColour(r, Sqr_2, row, Col_2, GetColour(r, Sqr_3, row, Col_2));
-    PutColour(r, Sqr_2, row, Col_3, GetColour(r, Sqr_3, row, Col_2));
+    PutColour(r, Sqr_2, row, Col_3, GetColour(r, Sqr_3, row, Col_3));
 
     PutColour(r, Sqr_3, row, Col_1, GetColour(r, Sqr_4, row, Col_1));
     PutColour(r, Sqr_3, row, Col_2, GetColour(r, Sqr_4, row, Col_2));
@@ -144,6 +152,22 @@ void TurnColumnDown(struct Rubik* const r, R_turn const t) {
     TurnColumn(r, t);
     TurnColumn(r, t);
     TurnColumn(r, t);
+}
+
+bool AssertRubik(struct Rubik* const r) {
+    R_colour nr_colours[Nr_of] = { 0 };
+    for(R_square sqr = Sqr_1; sqr < Sqr_nr_of; ++sqr) {
+        for(R_row row = Row_1; row < Row_nr_of; ++row) {
+            for(R_column col = Col_1; col < Col_nr_of; ++col) {
+                nr_colours[r->con[sqr][row][col]] += 1;
+            }
+        }
+    }
+    for(R_colour colour = White; colour < Nr_of; ++colour) {
+        if(nr_colours[colour] != 9)
+            return false;
+    }
+    return true;
 }
 
 struct Rubik* CreateRubik(size_t const len) {
