@@ -201,7 +201,6 @@ int ncurses_run(void) {
                 " Hopefully it can be printed as '%c'.", ch, ch);
         mvwprintw(stdscr, 26, 0, "                     ");
 #endif
-        R_turn turn;
         switch(ch) {
             case 'q':
                 request_stop = true;
@@ -239,32 +238,33 @@ int ncurses_run(void) {
             case '7':
             case '8':
             case '9':
-                if(Up == prev_input || Down == prev_input) {
-                    if('1' == ch || '4' == ch || '7' == ch)
-                         turn = Turn_Col_1;
-                    else if('2' == ch || '5' == ch || '8' == ch)
-                         turn = Turn_Col_2;
-                    else if('3' == ch || '6' == ch || '9' == ch)
-                         turn = Turn_Col_3;
-                }
-                else if(Left == prev_input || Right == prev_input) {
-                    if('7' == ch || '8' == ch || '9' == ch)
-                         turn = Turn_Row_1;
-                    else if('4' == ch || '5' == ch || '6' == ch)
-                         turn = Turn_Row_2;
-                    else if('1' == ch || '2' == ch || '3' == ch)
-                         turn = Turn_Row_3;
-                }
-                else {
-                    break;
-                }
-                ResetMoveWindow(move_win);
-                TurnRubik(r, turn, prev_input);
-                for(size_t i = 0; i < 6; ++i) {
-                    ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
-                    /* wrefresh(sqr_wins[i]); */
-                }
+                if(NoDir != prev_input) {
+                    assert(Left == prev_input || Right == prev_input
+                            || Up == prev_input || Down == prev_input);
+                    R_turn turn;
+                    if(Up == prev_input || Down == prev_input) {
+                        if('1' == ch || '4' == ch || '7' == ch)
+                             turn = Turn_Col_1;
+                        else if('2' == ch || '5' == ch || '8' == ch)
+                             turn = Turn_Col_2;
+                        else /* ('3' == ch || '6' == ch || '9' == ch) */
+                             turn = Turn_Col_3;
+                    } else {
+                        /* (Left == prev_input || Right == prev_input) */ 
+                        if('7' == ch || '8' == ch || '9' == ch)
+                             turn = Turn_Row_1;
+                        else if('4' == ch || '5' == ch || '6' == ch)
+                             turn = Turn_Row_2;
+                        else /* ('1' == ch || '2' == ch || '3' == ch) */
+                             turn = Turn_Row_3;
+                    }
+                    ResetMoveWindow(move_win);
+                    TurnRubik(r, turn, prev_input);
+                    for(size_t i = 0; i < 6; ++i) {
+                        ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
+                    }
                     prev_input = NoDir;
+                }
                 break;
             default:
 #if !defined(NDEBUG)

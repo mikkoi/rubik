@@ -1,6 +1,7 @@
 #ifndef RUBIK_DOMAIN_CORE
 #define RUBIK_DOMAIN_CORE
 #include <stddef.h>
+#include <stdbool.h>
 
 /**
  * The colours of the Rubik's cube.
