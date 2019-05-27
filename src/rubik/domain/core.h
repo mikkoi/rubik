@@ -48,6 +48,8 @@ void TurnRowRight(struct Rubik* const r, R_turn const t);
 void TurnColumnUp(struct Rubik* const r, R_turn const t);
 void TurnColumnDown(struct Rubik* const r, R_turn const t);
 bool AssertRubik(struct Rubik* const r);
+void SeedRandomRubikColour(unsigned int const seed);
+R_colour GetRandomRubikColour();
 
 /**
  * Get an individual colour.
@@ -92,5 +94,10 @@ void DiscardRubik(struct Rubik *rubik);
  *      123
  */
 void TurnRubik(struct Rubik* const r, R_turn const t, R_dir const d);
+
+/**
+ * Shuffle rubik.
+ */
+void ShuffleRubik(struct Rubik* const r);
 #endif
 

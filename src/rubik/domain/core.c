@@ -170,6 +170,14 @@ bool AssertRubik(struct Rubik* const r) {
     return true;
 }
 
+void SeedRandomRubikColour(unsigned int const seed) {
+    srand(seed);
+}
+
+R_colour GetRandomRubikColour() {
+    return (R_colour) ((unsigned long) rand() / ((RAND_MAX + 1UL) / 6UL));
+}
+
 struct Rubik* CreateRubik(size_t const len) {
     assert(len == 3); /* Only allowed size now. */
     struct Rubik* r = malloc(sizeof(struct Rubik));
@@ -220,5 +228,23 @@ void TurnRubik(struct Rubik* const r, R_turn const t, R_dir const d) {
     } else {
         assert(0);
     }
+}
+
+void ShuffleRubik(struct Rubik* const r) {
+    assert(r);
+    R_colour colours[6] = { 9, 9, 9, 9, 9, 9 };
+    for(R_square sqr = Sqr_1; sqr < Sqr_nr_of; ++sqr)
+        for(R_row row = Row_1; row < Row_nr_of; ++row)
+            for(R_column col = Col_1; col < Col_nr_of; ++col) {
+                GET_RANDOM:;
+                R_colour colour = GetRandomRubikColour();
+                assert(colour < Nr_of);
+                if(0 == colours[colour]) /* All colours already used */
+                    goto GET_RANDOM;
+                colours[colour] -= 1;
+                r->con[sqr][row][col] = colour;
+            }
+    for(int i = 0; i < 6; ++i)
+        assert(0 == colours[i]); /* Double check we used all colours, 9 each */
 }
 

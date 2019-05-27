@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
+#include <time.h>
 #include <assert.h>
 
 #include <ncurses.h>
@@ -159,15 +160,16 @@ int ncurses_run(void) {
 
     /* +----------+ */
     /* |q Quit    | */
+    /* |n New     | */
     /* |s Save    | */
     /* |r Restore | */
-    /* |          | */
     /* |          | */
     /* +----------+ */
     WINDOW* keys_win = newwin(10, 10, 2, 70);
     mvwprintw(keys_win, 0, 0, "q Quit");
-    /* mvwprintw(keys_win, 1, 0, "s Save"); */
-    /* mvwprintw(keys_win, 2, 0, "r Restore"); */
+    mvwprintw(keys_win, 1, 0, "n New");
+    /* mvwprintw(keys_win, 2, 0, "s Save"); */
+    /* mvwprintw(keys_win, 3, 0, "r Restore"); */
     wrefresh(keys_win);
 
     WINDOW* inst_win = newwin(7, 35, 2, 30);
@@ -207,10 +209,18 @@ int ncurses_run(void) {
         /* In C and C++, the cases of a switch statement are in fact labels,
          * and the switch is essentially a go-to that jumps to the desired label.
          * https://dzone.com/articles/implicit-fallthrough-in-gcc-7
+         * Attn. Can't actually do `goto <switch label>`!
          * */
         switch(ch) {
             case 'q':
                 request_stop = true;
+                break;
+            case 'n':
+                SeedRandomRubikColour((int unsigned) time(NULL));
+                ShuffleRubik(r);
+                for(size_t i = 0; i < 6; ++i) {
+                    ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
+                }
                 break;
             case KEY_LEFT:
                 /* Light up wanted direction arrows. */
