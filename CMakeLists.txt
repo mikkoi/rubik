@@ -85,9 +85,6 @@ string(APPEND CMAKE_CXX_FLAGS ${C_AND_CXX_COMPILER_FLAGS})
 #     #    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html DESTINATION     share/doc)
 # endif()
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
 # add_subdirectory(external)
 add_subdirectory(src)
 
