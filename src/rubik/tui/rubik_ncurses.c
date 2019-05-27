@@ -131,8 +131,13 @@ int ncurses_run(void) {
 
     /* Init other parts of the TUI */
     WINDOW* header_win = newwin(1, 79, 0, 0);
+#ifdef NDEBUG
 	mvwprintw(header_win, 0, 0, "%s", "RUBIK");
+#else
+	mvwprintw(header_win, 0, 0, "%s", "RUBIK --- THIS IS DEVELOPMENT BUILD!");
+#endif
     wrefresh(header_win);
+
 #if !defined(NDEBUG)
     /* For debugging purposes, draw a border around 24x80 area. */
     mvhline(24, 0, '-', 80);

@@ -1,23 +1,31 @@
-Handle a Rubik's cube with a terminal UI
 A Rubik cube simulator with a terminal UI
 
 # Requirements
 
-* Check test framework
 * NCurses
 
 # Install
 
-* git clone https://github.com/libcheck/check.git
-* mkdir build-Release-check
-* mkdir install-Release-check
-* cd build-Release-check
-* cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../install-Release-check ../check
+* git clone https://github.com/mikkoi/rubik.git
+* mkdir build-rubik && cd build-rubik
+* cmake ../rubik -DCMAKE_BUILD_TYPE=Release && make
 * make install
-* cd ..
+
+
+# Contribute
+
+## Check Framework
+
+* You need C test framework Check. Install via system tools, e.g. 
+  `sudo apt-get install check` or `yum install check`.
+* Or direct from GitHub: https://github.com/libcheck/check/releases
+
+## Rubik
+
 * git clone https://github.com/mikkoi/rubik.git
 * mkdir build-Release-rubik
 * cd build-Release-rubik
-* cmake -DCMAKE_BUILD_TYPE=Debug -Dcheck_ROOT=../install-Release-check ../rubik
+* cmake -DCMAKE_BUILD_TYPE=Debug -Dcheck_ROOT=<check_installation> ../rubik
 * make
+* ctest
 

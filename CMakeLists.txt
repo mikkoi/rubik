@@ -5,9 +5,12 @@ project( "Rubik"
     VERSION 0.0.0.1
     DESCRIPTION "Simulate Rubik's cube"
     LANGUAGES C)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+include(BuildType)
+
+option(BUILD_TESTING "" OFF)
 include(CTest)
 enable_testing()
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
