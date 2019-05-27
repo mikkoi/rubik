@@ -3,7 +3,7 @@
 #include <locale.h>
 #include "../rubik/tui/rubik_ncurses.h"
 
-int main(int argc, char* argv[argc+2]) {
+int main(int argc, char* argv[argc+1]) {
     setlocale(LC_ALL, "");
     if(ncurses_run() > 0)
         return EXIT_SUCCESS;
