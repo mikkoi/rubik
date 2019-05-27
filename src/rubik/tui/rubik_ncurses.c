@@ -171,7 +171,7 @@ int ncurses_run(void) {
     wrefresh(keys_win);
 
     WINDOW* inst_win = newwin(7, 35, 2, 30);
-    mvwprintw(inst_win, 0, 0, "To turn, first use arrow keys,\nthen numpad keys.");
+    mvwprintw(inst_win, 0, 0, "To turn, first use arrow keys\nor number keys 2/4/6/8,\nthen other numpad keys.");
     wrefresh(inst_win);
 
     /* +-----------------+ */
@@ -191,6 +191,9 @@ int ncurses_run(void) {
     R_dir prev_input = NoDir;
     bool request_stop = false;
     while(!request_stop) {
+        assert(Left == prev_input || Right == prev_input
+                || Up == prev_input || Down == prev_input
+                || NoDir == prev_input);
         assert(AssertRubik(r));
 #if !defined(NDEBUG)
         mvwprintw(stdscr, 27, 0, "DEBUG: prev_input: %5s.", R_dir_as_string(prev_input));
@@ -201,6 +204,10 @@ int ncurses_run(void) {
                 " Hopefully it can be printed as '%c'.", ch, ch);
         mvwprintw(stdscr, 26, 0, "                     ");
 #endif
+        /* In C and C++, the cases of a switch statement are in fact labels,
+         * and the switch is essentially a go-to that jumps to the desired label.
+         * https://dzone.com/articles/implicit-fallthrough-in-gcc-7
+         * */
         switch(ch) {
             case 'q':
                 request_stop = true;
@@ -231,12 +238,40 @@ int ncurses_run(void) {
                 break;
             case '1':
             case '2':
+                if(NoDir == prev_input) {
+                    prev_input = Down;
+                    ResetMoveWindow(move_win);
+                    UpdateMoveWindow(move_win, prev_input);
+                    break;
+                }
+                __attribute__ ((fallthrough));
             case '3':
             case '4':
+                if(NoDir == prev_input) {
+                    prev_input = Left;
+                    ResetMoveWindow(move_win);
+                    UpdateMoveWindow(move_win, prev_input);
+                    break;
+                }
+                __attribute__ ((fallthrough));
             case '5':
             case '6':
+                if(NoDir == prev_input) {
+                    prev_input = Right;
+                    ResetMoveWindow(move_win);
+                    UpdateMoveWindow(move_win, prev_input);
+                    break;
+                }
+                __attribute__ ((fallthrough));
             case '7':
             case '8':
+                if(NoDir == prev_input) {
+                    prev_input = Up;
+                    ResetMoveWindow(move_win);
+                    UpdateMoveWindow(move_win, prev_input);
+                    break;
+                }
+                __attribute__ ((fallthrough));
             case '9':
                 if(NoDir != prev_input) {
                     assert(Left == prev_input || Right == prev_input
