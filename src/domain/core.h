@@ -1,5 +1,6 @@
-#ifndef RUBIK_DOMAIN_CORE
-#define RUBIK_DOMAIN_CORE
+#ifndef RUBIK_DOMAIN_CORE_H
+#define RUBIK_DOMAIN_CORE_H
+#include "../project.h"
 #include <stddef.h>
 #include <stdbool.h>
 
@@ -49,7 +50,7 @@ void TurnColumnUp(struct Rubik* const r, R_turn const t);
 void TurnColumnDown(struct Rubik* const r, R_turn const t);
 bool AssertRubik(struct Rubik* const r);
 void SeedRandomRubikColour(unsigned int const seed);
-R_colour GetRandomRubikColour();
+R_colour GetRandomRubikColour(void);
 
 /**
  * Get an individual colour.

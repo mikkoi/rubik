@@ -57,6 +57,18 @@ string(APPEND C_AND_CXX_COMPILER_FLAGS
     " -fno-omit-frame-pointer"
     # " -Wl"
     # " -std=c89"
+    # Some of these are already part of -Wextra
+    " -Wpointer-arith -Wstrict-prototypes -O2"
+    " -pedantic"
+    " -Wmissing-prototypes -Wmissing-declarations"
+    " -Wstrict-prototypes -Wpointer-arith"
+    " -Wwrite-strings -Wcast-qual -Wcast-align"
+    " -Wbad-function-cast"
+    " -Wformat-security  -Wformat-nonliteral"
+    " -Wmissing-format-attribute"
+    " -Winline"
+    # https://dwheeler.com/secure-programs/Secure-Programs-HOWTO.html#C-CPP
+    " -funsigned-char" # forces unspecified "char"s to be unsigned
     )
 string(APPEND CMAKE_C_FLAGS ${C_AND_CXX_COMPILER_FLAGS})
 string(APPEND CMAKE_CXX_FLAGS ${C_AND_CXX_COMPILER_FLAGS})

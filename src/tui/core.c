@@ -7,6 +7,7 @@
 
 #include <ncurses.h>
 
+#include "core.h"
 #include "../domain/core.h"
 
 #define RUBIK_NCURSES_EXIT_SUCCESS 1
@@ -69,7 +70,7 @@ static void DrawRubikSide(WINDOW* win) {
     waddch(win, ACS_LLCORNER);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_BTEE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_BTEE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_HLINE);waddch(win, ACS_LRCORNER);
 }
 
-static void RubikCreateColorPairs() {
+static void RubikCreateColorPairs(void) {
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
     init_pair(2, COLOR_BLACK, COLOR_RED);
     init_pair(3, COLOR_BLACK, COLOR_BLUE);
@@ -77,7 +78,7 @@ static void RubikCreateColorPairs() {
     init_pair(5, COLOR_BLACK, COLOR_GREEN);
     init_pair(6, COLOR_BLACK, COLOR_YELLOW);
 }
-static void RubikDeleteColorPairs() {
+static void RubikDeleteColorPairs(void) {
     /* reset_color_pairs(); */
 }
 static void ColorRubikSide(WINDOW* win, size_t m, size_t n, R_colour side[m][n]) {
