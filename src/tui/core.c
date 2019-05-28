@@ -263,7 +263,7 @@ int ncurses_run(void) {
                     UpdateMoveWindow(move_win, prev_input);
                     break;
                 }
-                /* FALLTHRU */
+                __attribute__ ((fallthrough));
             case '3':
                 if(NoDir == prev_input) {
                     break;
@@ -276,7 +276,7 @@ int ncurses_run(void) {
                     UpdateMoveWindow(move_win, prev_input);
                     break;
                 }
-                /* FALLTHRU */
+                __attribute__ ((fallthrough));
             case '5':
                 if(NoDir == prev_input) {
                     break;
@@ -289,7 +289,7 @@ int ncurses_run(void) {
                     UpdateMoveWindow(move_win, prev_input);
                     break;
                 }
-                /* FALLTHRU */
+                __attribute__ ((fallthrough));
             case '7':
                 if(NoDir == prev_input) {
                     break;
@@ -302,7 +302,7 @@ int ncurses_run(void) {
                     UpdateMoveWindow(move_win, prev_input);
                     break;
                 }
-                /* FALLTHRU */
+                __attribute__ ((fallthrough));
             case '9':
                 if(NoDir != prev_input) {
                     assert(Left == prev_input || Right == prev_input
