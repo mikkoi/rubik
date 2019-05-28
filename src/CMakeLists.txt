@@ -5,6 +5,7 @@ if(BUILD_TESTING)
     target_link_libraries(test_suite PUBLIC Check::check)
 endif()
 
-add_subdirectory(rubik)
+add_subdirectory(domain)
+add_subdirectory(tui)
 add_subdirectory(bin)
 

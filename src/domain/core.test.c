@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <check.h>
-#include "../../test_suite.h"
+#include "../test_suite.h"
 #include "core.h"
 
 START_TEST (testCreateRubik) {
