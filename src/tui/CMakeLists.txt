@@ -4,6 +4,6 @@ set(CURSES_NEED_WIDE BOOL TRUE)
 include(FindCurses REQUIRED)
 include_directories(BEFORE ${CURSES_INCLUDE_DIRS})
 
-add_library(rubik_ncurses rubik_ncurses.c)
-target_link_libraries(rubik_ncurses PRIVATE core ${CURSES_LIBRARIES})
+add_library(tui_core core.c)
+target_link_libraries(tui_core PRIVATE domain_core ${CURSES_LIBRARIES})
 

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <locale.h>
-#include "../tui/rubik_ncurses.h"
+#include "../tui/core.h"
 
 int main(int argc, char* argv[argc+1]) {
     setlocale(LC_ALL, "");
