@@ -7,6 +7,7 @@
 
 #include <ncurses.h>
 
+#include "../project.h"
 #include "core.h"
 #include "../domain/core.h"
 

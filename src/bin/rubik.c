@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <locale.h>
+#include "../project.h"
 #include "../tui/core.h"
 
 int main(int argc, char* argv[argc+1]) {
