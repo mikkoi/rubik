@@ -155,7 +155,7 @@ void TurnColumnDown(struct Rubik* const r, R_turn const t) {
 }
 
 bool AssertRubik(struct Rubik* const r) {
-    R_colour nr_colours[Nr_of] = { 0 };
+    size_t nr_colours[Nr_of] = { 0 };
     for(R_square sqr = Sqr_1; sqr < Sqr_nr_of; ++sqr) {
         for(R_row row = Row_1; row < Row_nr_of; ++row) {
             for(R_column col = Col_1; col < Col_nr_of; ++col) {
