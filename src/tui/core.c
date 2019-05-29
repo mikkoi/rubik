@@ -257,7 +257,7 @@ int ncurses_run(void) {
                 if(NoDir == prev_input) {
                     break;
                 }
-                __attribute__ ((fallthrough));
+                RUBIK_ATTRIBUTE_FALLTHROUGH;
             case '2':
                 if(NoDir == prev_input) {
                     prev_input = Down;
@@ -265,12 +265,12 @@ int ncurses_run(void) {
                     UpdateMoveWindow(move_win, prev_input);
                     break;
                 }
-                __attribute__ ((fallthrough));
+                RUBIK_ATTRIBUTE_FALLTHROUGH;
             case '3':
                 if(NoDir == prev_input) {
                     break;
                 }
-                __attribute__ ((fallthrough));
+                RUBIK_ATTRIBUTE_FALLTHROUGH;
             case '4':
                 if(NoDir == prev_input) {
                     prev_input = Left;
@@ -278,12 +278,12 @@ int ncurses_run(void) {
                     UpdateMoveWindow(move_win, prev_input);
                     break;
                 }
-                __attribute__ ((fallthrough));
+                RUBIK_ATTRIBUTE_FALLTHROUGH;
             case '5':
                 if(NoDir == prev_input) {
                     break;
                 }
-                __attribute__ ((fallthrough));
+                RUBIK_ATTRIBUTE_FALLTHROUGH;
             case '6':
                 if(NoDir == prev_input) {
                     prev_input = Right;
@@ -291,12 +291,12 @@ int ncurses_run(void) {
                     UpdateMoveWindow(move_win, prev_input);
                     break;
                 }
-                __attribute__ ((fallthrough));
+                RUBIK_ATTRIBUTE_FALLTHROUGH;
             case '7':
                 if(NoDir == prev_input) {
                     break;
                 }
-                __attribute__ ((fallthrough));
+                RUBIK_ATTRIBUTE_FALLTHROUGH;
             case '8':
                 if(NoDir == prev_input) {
                     prev_input = Up;
@@ -304,7 +304,7 @@ int ncurses_run(void) {
                     UpdateMoveWindow(move_win, prev_input);
                     break;
                 }
-                __attribute__ ((fallthrough));
+                RUBIK_ATTRIBUTE_FALLTHROUGH;
             case '9':
                 if(NoDir != prev_input) {
                     assert(Left == prev_input || Right == prev_input
