@@ -4,7 +4,7 @@
 
 /* https://stackoverflow.com/questions/1143262/what-is-the-difference-between-const-int-const-int-const-and-int-const */
 
-Suite * test_suite(void) {
+static Suite * test_suite(void) {
     Suite *s;
     TCase *tc_core;
     TFun tests[MAX_TESTS_IN_SUITE] = { 0 };
