@@ -17,31 +17,35 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
 
-# find_package(Cppcheck)
+find_package(Cppcheck)
+if(CPPCHECK_FOUND)
+    include(cppcheck.cmake)
+endif(CPPCHECK_FOUND)
 
-if(Cppcheck_FOUND)
-    function(add_executable bin src)
-        message(STATUS "add executable '${src}' for checking with Cppcheck.")
-        _add_executable(${bin} ${src})
-        get_property(THESE_INCLUDES TARGET ${bin} PROPERTY INCLUDE_DIRECTORIES)
-        # message(STATUS "${THESE_INCLUDES}")
-        add_custom_command(
-            TARGET ${bin}
-            PRE_BUILD
-            COMMAND
-                cppcheck --enable=all --language=c
-                --std=c89
-                --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
-                --verbose --quiet --inline-suppr
-                # --check-config
-                ${src}
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            COMMENT "Running Cppcheck on ${src}."
-            # VERBATIM
-            USES_TERMINAL
-        )
-    endfunction()
-endif(Cppcheck_FOUND)
+
+# if(Cppcheck_FOUND)
+#     function(add_executable bin src)
+#         message(STATUS "add executable '${src}' for checking with Cppcheck.")
+#         _add_executable(${bin} ${src})
+#         get_property(THESE_INCLUDES TARGET ${bin} PROPERTY INCLUDE_DIRECTORIES)
+#         # message(STATUS "${THESE_INCLUDES}")
+#         add_custom_command(
+#             TARGET ${bin}
+#             PRE_BUILD
+#             COMMAND
+#                 cppcheck --enable=all --language=c
+#                 --std=c89
+#                 --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
+#                 --verbose --quiet --inline-suppr
+#                 # --check-config
+#                 ${src}
+#             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#             COMMENT "Running Cppcheck on ${src}."
+#             # VERBATIM
+#             USES_TERMINAL
+#         )
+#     endfunction()
+# endif(Cppcheck_FOUND)
 
 string(APPEND C_AND_CXX_COMPILER_FLAGS
     " -Wall"

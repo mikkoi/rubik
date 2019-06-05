@@ -13,18 +13,19 @@ file(GLOB_RECURSE ALL_SOURCE_FILES misc/*.c ModernC/*.c AOX-C/*.c)
 add_custom_target(
         cppcheck
         ALL
+        COMMENT "Running Cppcheck on all files."
         COMMAND cppcheck
-        --enable=all
-        #--enable=warning,performance,portability,information,missingInclude
-        --language=c
-        --std=c89
-        #--library=qt.cfg
-        --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
-        # --platform=unix64
-        --verbose
-        --quiet
-        --inline-suppr
-        ${ALL_SOURCE_FILES}
-        # -i ${CMAKE_CURRENT_SOURCE_DIR}/otaDATA
+            --enable=all
+            #--enable=warning,performance,portability,information,missingInclude
+            --language=c
+            --std=c89
+            #--library=qt.cfg
+            --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
+            # --platform=unix64
+            --verbose
+            --quiet
+            --inline-suppr
+            ${ALL_SOURCE_FILES}
+            # -i ${CMAKE_CURRENT_SOURCE_DIR}/otaDATA
 )
 # add_custom_command    COMMAND cppcheck --enable all --
