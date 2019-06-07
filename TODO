@@ -7,9 +7,8 @@
 # Projects:
 # +TUI     (terminal UI)
 # +Model   (domain/business logic)
-# +Other
 # +CLI     (command line interface parameters)
-# +Config
+# +Config  (config file, save game status)
 
 # Context:
 # @bug
@@ -20,14 +19,15 @@
 # release:0.0.1 (Add this when release is decided/done)
 
 
-Use YAML as config file format. +Other
-Track movements. +Model
-Make it possible to retrace movements. +Model +TUI
-Save game status and movements. +Other
-Apply a command line parameter handling library. +CLI
-Parameter "--usage/help" for program. +CLI
-Arrange the squares in any order. +TUI +Config
-Define colours in config. +TUI +Config
-Support Solarized colours. +TUI +Config
-Localize and internationalize all strings. +TUI
+[ ] Use YAML as config file format. +Config
+    libyaml or libyamlck?
+[ ] Track movements. +Model
+[ ] Make it possible to retrace movements. +Model +TUI
+[ ] Save game status and movements. +Config
+[ ] Apply a command line parameter handling library. +CLI
+[ ] Parameter "--usage/help" for program. +CLI
+[ ] Arrange the squares in any order. +TUI +Config
+[ ] Define colours in config. +TUI +Config @idea
+[ ] Support Solarized colours. +TUI +Config @idea
+[ ] Localize and internationalize all strings. +TUI
 
