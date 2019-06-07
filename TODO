@@ -1,0 +1,31 @@
+# This TODO file follows the convensions of todo.txt
+# https://github.com/todotxt/todo.txt
+# with the following exceptions:
+# 1. Line beginning with # is a comment, not to processed.
+# 2. Line beginning with whitespace continues the item on the previous line.
+
+# Projects:
+# +TUI     (terminal UI)
+# +Model   (domain/business logic)
+# +Other
+# +CLI     (command line interface parameters)
+# +Config
+
+# Context:
+# @bug
+# @idea
+# @feature
+# @abandoned
+
+# release:0.0.1 (Add this when release is decided/done)
+
+
+Use YAML as config file format. +Other
+Track movements. +Model
+Make it possible to retrace movements. +Model +TUI
+Save game status and movements. +Other
+Apply a command line parameter handling library. +CLI
+Parameter "--usage/help" for program. +CLI
+Arrange the squares in any order. +TUI +Config
+Change colours. +TUI +Config
+
