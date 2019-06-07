@@ -27,5 +27,7 @@ Save game status and movements. +Other
 Apply a command line parameter handling library. +CLI
 Parameter "--usage/help" for program. +CLI
 Arrange the squares in any order. +TUI +Config
-Change colours. +TUI +Config
+Define colours in config. +TUI +Config
+Support Solarized colours. +TUI +Config
+Localize and internationalize all strings. +TUI
 
