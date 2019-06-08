@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 cmake_policy(SET CMP0048 NEW) # project() command manages VERSION vars
 cmake_policy(SET CMP0074 NEW) # Use <PackageName>_ROOT variables
 project( "Rubik"
