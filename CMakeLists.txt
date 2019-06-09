@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 cmake_policy(SET CMP0048 NEW) # project() command manages VERSION vars
 cmake_policy(SET CMP0074 NEW) # Use <PackageName>_ROOT variables
-project( "Rubik"
+project( Rubik
     VERSION 0.0.0.1
     DESCRIPTION "Simulate Rubik's cube"
+    HOMEPAGE_URL "https://www.github.com/mikkoi/rubik"
     LANGUAGES C)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(BuildType)
