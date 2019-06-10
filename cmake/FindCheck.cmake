@@ -57,8 +57,15 @@ The following cache variables may also be set:
 #]=======================================================================]
 
 if(Check_ROOT)
-    set(Check_INCLUDE_DIR ${Check_ROOT}/include)
-    set(Check_LIBRARY ${Check_ROOT}/lib/libcheck.so)
+    find_path(Check_INCLUDE_DIR
+      NAMES check.h
+      PATHS ${Check_ROOT}
+      PATH_SUFFIXES check
+    )
+    find_library(Check_LIBRARY
+      NAMES check
+      PATHS ${Check_ROOT}
+    )
 else()
     find_package(PkgConfig)
     pkg_check_modules(PC_check QUIET check)
