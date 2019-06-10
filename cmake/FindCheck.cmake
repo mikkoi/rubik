@@ -57,40 +57,40 @@ The following cache variables may also be set:
 #]=======================================================================]
 
 if(Check_ROOT)
-    find_path(Check_INCLUDE_DIR
-      NAMES check.h
-      PATHS ${Check_ROOT}
-      PATH_SUFFIXES check
-    )
-    find_library(Check_LIBRARY
-      NAMES check
-      PATHS ${Check_ROOT}
-    )
+  find_path(Check_INCLUDE_DIR
+    NAMES check.h
+    PATHS ${Check_ROOT}
+    PATH_SUFFIXES check
+  )
+  find_library(Check_LIBRARY
+    NAMES check
+    PATHS ${Check_ROOT}
+  )
 else()
-    find_package(PkgConfig)
-    pkg_check_modules(PC_check QUIET check)
+  find_package(PkgConfig)
+  pkg_check_modules(PC_check QUIET check)
 
-    find_path(Check_INCLUDE_DIR
-      NAMES check.h
-      PATHS ${PC_Check_INCLUDE_DIRS}
-      PATH_SUFFIXES check
-    )
-    find_library(Check_LIBRARY
-      NAMES check
-      PATHS ${PC_Check_LIBRARY_DIRS}
-    )
+  find_path(Check_INCLUDE_DIR
+    NAMES check.h
+    PATHS ${PC_Check_INCLUDE_DIRS}
+    PATH_SUFFIXES check
+  )
+  find_library(Check_LIBRARY
+    NAMES check
+    PATHS ${PC_Check_LIBRARY_DIRS}
+  )
 endif()
 
 if(NOT "${Check_INCLUDE_DIR}" STREQUAL "Check_INCLUDE_DIR-NOTFOUND")
-    set(RX_WS "[ \t\r\n]")
-    file(READ "${Check_INCLUDE_DIR}/check.h" Check_HEADER)
-    string(REGEX MATCH "#define${RX_WS}+CHECK_MAJOR_VERSION${RX_WS}+\\(([0-9]+)\\)" Check_MAJOR_VERSION_A ${Check_HEADER})
-    set(Check_MAJOR_VERSION ${CMAKE_MATCH_1})
-    string(REGEX MATCH "#define${RX_WS}+CHECK_MINOR_VERSION${RX_WS}+\\(([0-9]+)\\)" Check_MINOR_VERSION_A ${Check_HEADER})
-    set(Check_MINOR_VERSION ${CMAKE_MATCH_1})
-    string(REGEX MATCH "#define${RX_WS}+CHECK_MICRO_VERSION${RX_WS}+\\(([0-9]+)\\)" Check_MICRO_VERSION_A ${Check_HEADER})
-    set(Check_MICRO_VERSION ${CMAKE_MATCH_1})
-    set(Check_VERSION "${check_MAJOR_VERSION}.${Check_MINOR_VERSION}.${Check_MICRO_VERSION}")
+  set(RX_WS "[ \t\r\n]")
+  file(READ "${Check_INCLUDE_DIR}/check.h" Check_HEADER)
+  string(REGEX MATCH "#define${RX_WS}+CHECK_MAJOR_VERSION${RX_WS}+\\(([0-9]+)\\)" Check_MAJOR_VERSION_A ${Check_HEADER})
+  set(Check_MAJOR_VERSION ${CMAKE_MATCH_1})
+  string(REGEX MATCH "#define${RX_WS}+CHECK_MINOR_VERSION${RX_WS}+\\(([0-9]+)\\)" Check_MINOR_VERSION_A ${Check_HEADER})
+  set(Check_MINOR_VERSION ${CMAKE_MATCH_1})
+  string(REGEX MATCH "#define${RX_WS}+CHECK_MICRO_VERSION${RX_WS}+\\(([0-9]+)\\)" Check_MICRO_VERSION_A ${Check_HEADER})
+  set(Check_MICRO_VERSION ${CMAKE_MATCH_1})
+  set(Check_VERSION "${check_MAJOR_VERSION}.${Check_MINOR_VERSION}.${Check_MICRO_VERSION}")
 endif()
 
 include(FindPackageHandleStandardArgs)
@@ -124,5 +124,4 @@ endif()
 set(CHECK_FOUND ${Check_FOUND})
 set(CHECK_INCLUDE_DIR ${Check_INCLUDE_DIRS})
 set(CHECK_LIBRARIES ${Check_LIBRARIES})
-
 
