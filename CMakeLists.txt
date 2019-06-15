@@ -17,10 +17,11 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-
+add_custom_target(qa)
 find_package(Cppcheck)
 if(CPPCHECK_FOUND)
     include(cppcheck.cmake)
+    add_dependencies(qa cppcheck)
 endif(CPPCHECK_FOUND)
 
 

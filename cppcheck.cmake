@@ -18,12 +18,13 @@ add_custom_target(
             # --enable=all
             # --enable=warning,performance,portability,information,missingInclude
             --enable=warning,performance,portability,information
+            --suppress=missingIncludeSystem
             --language=c --std=c11
             #--library=qt.cfg
             --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
             # --platform=unix64
             --verbose --quiet --inline-suppr
-            # --check-config
+            --check-config
             # -I ${CMAKE_C_STANDARD_INCLUDE_DIRECTORIES}
             ${ALL_SOURCE_FILES}
             # -i ${CMAKE_CURRENT_SOURCE_DIR}/otaDATA
