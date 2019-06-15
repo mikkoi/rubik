@@ -31,3 +31,11 @@
 [ ] Support Solarized colours. +TUI +Config @idea
 [ ] Localize and internationalize all strings. +TUI
 
+Make whole display configurable: Every item is a window and can be placed
+anywhere on the screen, including on top of some other.
+Make an interactive config editor which tells when windows overlap.
+Use CLI library opt
+https://stackoverflow.com/questions/9642732/parsing-command-line-arguments-in-c
+https://public.lanl.gov/jt/Software/, http://www.decompile.com/not_invented_here/opt/
+
+
