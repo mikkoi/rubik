@@ -259,10 +259,13 @@ int ncurses_run(void) {
                 UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), MaxTurnNumberRubikGame(g), (void*) 0, (void*) 0);
                 break;
             case 'z':
-                /* UndoTurn(r); */
+                ; /* Silly limitation:
+                    * https://stackoverflow.com/questions/8384388/variable-declaration-after-goto-label */
+                struct RubikTurn* prev = UndoTurnRubikGame(r);
                 for(size_t i = 0; i < 6; ++i) {
                     ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
                 }
+                UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), MaxTurnNumberRubikGame(g), prev, (void*) 0);
                 break;
             case KEY_LEFT:
                 /* Light up wanted direction arrows. */
@@ -366,10 +369,9 @@ int ncurses_run(void) {
                     mvwprintw(stdscr, 28, 0, "                              ");
                     mvwprintw(stdscr, 28, 0, "DEBUG: Turn %s %s", R_dir_as_string(prev_input), R_turn_as_string(turn));
 #endif
-                    TurnRubik(r, turn, prev_input);
-                    /* struct RubikTurn* t = PlayerTurnRubikGame(g, prev_input, turn); */
-                    /* assert(t); */
-                    /* UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), MaxTurnNumberRubikGame(g), t, (void*) 0); */
+                    struct RubikTurn* t = PlayerTurnRubikGame(g, prev_input, turn);
+                    assert(t);
+                    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), MaxTurnNumberRubikGame(g), t, (void*) 0);
                     for(size_t i = 0; i < 6; ++i) {
                         ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
                     }
@@ -389,7 +391,7 @@ int ncurses_run(void) {
 
     /* Clean up */
     RubikDeleteColorPairs();
-    DiscardRubik(r);
+    FinishRubikGame(g);
     endwin();
     return RUBIK_NCURSES_EXIT_SUCCESS;
 }

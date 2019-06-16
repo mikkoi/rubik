@@ -12,14 +12,16 @@
 char const* R_turn_strings[7] = {
     "Col 1", "Col 2", "Col 3", "Row 1", "Row 2", "Row 3", "NoTurn"
 };
-char const* R_turn_as_string(R_turn const turn) {
-    return R_turn_strings[turn];
+char const* R_turn_as_string(R_turn const t) {
+    assert(0 <= t && t < 7);
+    return R_turn_strings[t];
 }
 char const* R_dir_strings[5] = {
     "Left", "Right", "Up", "Down", "NoDir"
 };
-char const* R_dir_as_string(R_dir const dir) {
-    return R_dir_strings[dir];
+char const* R_dir_as_string(R_dir const d) {
+    assert(0 <= d && d < 5);
+    return R_dir_strings[d];
 }
 /* When undoing a turn, we need the opposite direction.
  * But not opposite col/row.*/
@@ -208,30 +210,34 @@ void DiscardRubik(struct Rubik *rubik) {
     free(rubik);
 }
 
+/* Turn the edge squares, every one must be handled individually! I think! */
 void TurnRubik(struct Rubik* const r, R_turn const t, R_dir const d) {
-    /* R_row const row, R_column const col,  */
     if(Left == d) {
         TurnRowLeft(r, t);
-        if(Turn_Col_1 == t || Turn_Col_3 == t) { /* Turn the edge squares */
+        if(Turn_Row_1 == t) {
             TurnSquare90DegreesClockWise(r, Sqr_1);
+        } else if(Turn_Row_3 == t) {
             TurnSquare90DegreesAntiClockWise(r, Sqr_6);
         }
     } else if(Right == d) {
         TurnRowRight(r, t);
-        if(Turn_Col_1 == t || Turn_Col_3 == t) {
+        if(Turn_Row_1 == t) {
             TurnSquare90DegreesAntiClockWise(r, Sqr_1);
+        } else if(Turn_Row_3 == t) {
             TurnSquare90DegreesClockWise(r, Sqr_6);
         }
     } else if(Up == d) {
         TurnColumnUp(r, t);
-        if(Turn_Row_1 == t || Turn_Row_3 == t) {
+        if(Turn_Col_1 == t) {
             TurnSquare90DegreesAntiClockWise(r, Sqr_2);
+        } else if(Turn_Col_3 == t) {
             TurnSquare90DegreesClockWise(r, Sqr_4);
         }
     } else if(Down == d) {
         TurnColumnDown(r, t);
-        if(Turn_Row_1 == t || Turn_Row_3 == t) {
+        if(Turn_Col_1 == t) {
             TurnSquare90DegreesClockWise(r, Sqr_2);
+        } else if(Turn_Col_3 == t) {
             TurnSquare90DegreesAntiClockWise(r, Sqr_4);
         }
     } else {
@@ -319,10 +325,6 @@ struct RubikTurn* PlayerTurnRubikGame(struct RubikGame* rbg, R_dir const d, R_tu
     struct RubikTurn* rbt = &(this_turn->rbtln_turn);
     rbt->rbt_dir = d;
     rbt->rbt_turn = t;
-    /* void (*turnFunctions[4])(struct Rubik* const, R_turn const) = { */
-        /* TurnRowLeft, TurnRowRight, TurnColumnUp, TurnColumnDown */
-    /* }; */
-    /* (*turnFunctions[d])(rbg->rbg_rubik, t); */
     TurnRubik(rbg->rbg_rubik, t, d);
     return rbt;
 }
@@ -369,9 +371,11 @@ struct RubikTurn* UndoTurnRubikGame(struct RubikGame* const game) {
     struct RubikTurnListNode* prev_turn = (void*) 0;
     if(game->rbg_current_turn) {
         struct RubikTurnListNode* curr_turn = game->rbg_current_turn;
+        struct RubikTurn* curr_t = &(curr_turn->rbtln_turn);
         struct RubikTurnListNode* prev_turn = curr_turn->rbtln_prev;
 
         /* Reverse current turn */
+        assert(0 <= curr_t->rbt_dir && curr_t->rbt_dir <= 3);
         R_dir d = R_dir_opp[curr_turn->rbtln_turn.rbt_dir];
         R_turn t = curr_turn->rbtln_turn.rbt_turn;
         TurnRubik(game->rbg_rubik, t, d);
