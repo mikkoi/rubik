@@ -9,7 +9,7 @@ project( Rubik
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(BuildType)
 
-option(BUILD_TESTING "" OFF)
+option(BUILD_TESTING "Build tests" OFF)
 include(CTest)
 enable_testing()
 
@@ -78,6 +78,8 @@ string(APPEND C_AND_CXX_COMPILER_FLAGS
     )
 string(APPEND CMAKE_C_FLAGS ${C_AND_CXX_COMPILER_FLAGS})
 string(APPEND CMAKE_CXX_FLAGS ${C_AND_CXX_COMPILER_FLAGS})
+
+include_directories(${CMAKE_BINARY_DIR}/src)
 
 
 # Doxygen
