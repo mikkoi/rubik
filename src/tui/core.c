@@ -48,6 +48,23 @@ static void UpdateMoveWindow(WINDOW* win, R_dir dir) {
 static void ResetMoveWindow(WINDOW* win) {
     DrawMoveWindow(win);
 }
+static void DrawTurnsWindow(WINDOW* win) {
+    mvwprintw(win, 0, 0, "Turns: ");
+    mvwprintw(win, 1, 0, "# ");
+    mvwprintw(win, 1, 0, "Last: ");
+    wrefresh(win);
+}
+static void UpdateTurnsWindows(WINDOW* win,
+        unsigned long nr_turns, unsigned long nr_max_turns, struct RubikTurn* rbt, struct RubikTurn* rbt_next) {
+    mvwprintw(win, 1, 0, "Done: %lu (%lu)", nr_turns, nr_max_turns);
+    if(rbt) {
+        mvwprintw(win, 2, 0, "Curr: %s %s.", R_dir_as_string(rbt->rbt_dir), R_turn_as_string(rbt->rbt_turn));
+    }
+    if(rbt_next) {
+        mvwprintw(win, 2, 0, "Next: %s %s.", R_dir_as_string(rbt->rbt_dir), R_turn_as_string(rbt->rbt_turn));
+    }
+    wrefresh(win);
+}
 static void DrawRubikSide(WINDOW* win) {
     /* wprintw(win, "┌───┬───┬───┐" "\n"); */
     /* wprintw(win, "│   │   │   │" "\n"); */
@@ -149,9 +166,10 @@ int ncurses_run(void) {
 #endif
     /* Init rubik */
     RubikCreateColorPairs();
-    struct Rubik* r = CreateRubik(3);
+    struct RubikGame* g = StartRubikGame();
+    struct Rubik* r = g->rbg_rubik;
 
-    /* Create windows them for all six squares of the Rubik's cube. */
+    /* Create windows for all six squares of the Rubik's cube. */
     int pos_line = 2;
     int pos_col = -13;
     WINDOW* sqr_wins[6] = { (void*) 0 };
@@ -166,18 +184,20 @@ int ncurses_run(void) {
         wrefresh(sqr_wins[i]);
     }
 
-    /* +----------+ */
-    /* |q Quit    | */
-    /* |n New     | */
-    /* |s Save    | */
-    /* |r Restore | */
-    /* |          | */
-    /* +----------+ */
-    WINDOW* keys_win = newwin(10, 10, 2, 70);
+    /* +-----------+ */
+    /* |q Quit     | */
+    /* |n New Game | */
+    /* |r Randomize| */
+    /* |z Undo     | */
+    /* |Z Redo     | */
+    /* |           | */
+    /* +-----------+ */
+    WINDOW* keys_win = newwin(10, 11, 2, 65);
     mvwprintw(keys_win, 0, 0, "q Quit");
-    mvwprintw(keys_win, 1, 0, "n New");
-    /* mvwprintw(keys_win, 2, 0, "s Save"); */
-    /* mvwprintw(keys_win, 3, 0, "r Restore"); */
+    mvwprintw(keys_win, 1, 0, "n New Game");
+    mvwprintw(keys_win, 2, 0, "r Randomize");
+    mvwprintw(keys_win, 3, 0, "z Undo");
+    mvwprintw(keys_win, 4, 0, "Z Redo");
     wrefresh(keys_win);
 
     WINDOW* inst_win = newwin(7, 35, 2, 30);
@@ -193,6 +213,10 @@ int ncurses_run(void) {
     /* +-----------------+ */
     WINDOW* move_win = newwin(6, 19, pos_line + 14, 2 * 13 + 2);
     DrawMoveWindow(move_win);
+
+    WINDOW* turns_win = newwin(4, 20, 20, 60);
+    DrawTurnsWindow(turns_win);
+    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), MaxTurnNumberRubikGame(g), (void*) 0, (void*) 0);
 
     /* Main loop */
     raw();
@@ -224,8 +248,18 @@ int ncurses_run(void) {
                 request_stop = true;
                 break;
             case 'n':
-                SeedRandomRubikColour((int unsigned) time(NULL));
-                ShuffleRubik(r);
+                /* SeedRandomRubikColour((int unsigned) time(NULL)); */
+                /* ShuffleRubik(r); */
+                FinishRubikGame(g);
+                g = StartRubikGame();
+                r = g->rbg_rubik;
+                for(size_t i = 0; i < 6; ++i) {
+                    ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
+                }
+                UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), MaxTurnNumberRubikGame(g), (void*) 0, (void*) 0);
+                break;
+            case 'z':
+                /* UndoTurn(r); */
                 for(size_t i = 0; i < 6; ++i) {
                     ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
                 }
@@ -328,7 +362,14 @@ int ncurses_run(void) {
                              turn = Turn_Row_3;
                     }
                     ResetMoveWindow(move_win);
+#if !defined(NDEBUG)
+                    mvwprintw(stdscr, 28, 0, "                              ");
+                    mvwprintw(stdscr, 28, 0, "DEBUG: Turn %s %s", R_dir_as_string(prev_input), R_turn_as_string(turn));
+#endif
                     TurnRubik(r, turn, prev_input);
+                    /* struct RubikTurn* t = PlayerTurnRubikGame(g, prev_input, turn); */
+                    /* assert(t); */
+                    /* UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), MaxTurnNumberRubikGame(g), t, (void*) 0); */
                     for(size_t i = 0; i < 6; ++i) {
                         ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
                     }

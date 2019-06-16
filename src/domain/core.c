@@ -9,12 +9,21 @@
 #include <assert.h>
 #include "core.h"
 
-char const * R_dir_strings[5] = {
+char const* R_turn_strings[7] = {
+    "Col 1", "Col 2", "Col 3", "Row 1", "Row 2", "Row 3", "NoTurn"
+};
+char const* R_turn_as_string(R_turn const turn) {
+    return R_turn_strings[turn];
+}
+char const* R_dir_strings[5] = {
     "Left", "Right", "Up", "Down", "NoDir"
 };
-char const * R_dir_as_string(R_dir const dir) {
+char const* R_dir_as_string(R_dir const dir) {
     return R_dir_strings[dir];
 }
+/* When undoing a turn, we need the opposite direction.
+ * But not opposite col/row.*/
+R_dir R_dir_opp[4] = { Right, Left, Down, Up };
 
 void PutColour(struct Rubik* const r, R_square const square, R_row const row, R_column const col, R_colour const colour) {
     r->con[square][row][col] = colour;
@@ -246,5 +255,134 @@ void ShuffleRubik(struct Rubik* const r) {
             }
     for(int i = 0; i < 6; ++i)
         assert(0 == colours[i]); /* Double check we used all colours, 9 each */
+}
+
+struct RubikGame* StartRubikGame(void) {
+    struct RubikGame* g = malloc(sizeof(struct RubikGame));
+    if(!g) {
+        perror("malloc"); exit(EXIT_FAILURE);
+    }
+    g->rbg_rubik = CreateRubik(3);
+    g->rbg_first_turn = (void*) 0;
+    /* g->rbg_first_player_turn = (void*) 0; */
+    g->rbg_current_turn = (void*) 0;
+    return g;
+}
+
+void FinishRubikGame(struct RubikGame* g) {
+    DiscardRubik(g->rbg_rubik);
+    /* Traverse list to the last node. */
+    struct RubikTurnListNode* last_turn = (void*) 0;
+    if(g->rbg_first_turn) {
+        last_turn = g->rbg_first_turn;
+        while(last_turn->rbtln_next) {
+            last_turn = last_turn->rbtln_next;
+        }
+        /* We know the last node. Now we traverse backwards and free the nodes. */
+        while(last_turn->rbtln_prev) {
+            last_turn = last_turn->rbtln_prev;
+            free(last_turn->rbtln_next);
+        }
+        free(g->rbg_first_turn);
+    }
+    g->rbg_first_turn = (void*) 0;
+    g->rbg_current_turn = (void*) 0;
+    free(g);
+}
+
+/* void ShuffleTurnRubikGame(struct RubikGame* const game) { */
+/* } */
+
+struct RubikTurn* PlayerTurnRubikGame(struct RubikGame* rbg, R_dir const d, R_turn const t) {
+    struct RubikTurnListNode* last_turn = (void*) 0;
+    if(rbg->rbg_first_turn) {
+        last_turn = rbg->rbg_first_turn;
+        while(last_turn->rbtln_next) {
+            last_turn = last_turn->rbtln_next;
+        }
+    }
+
+    struct RubikTurnListNode* this_turn = malloc(sizeof(struct RubikTurnListNode));
+    if(!this_turn) {
+        perror("malloc"); exit(EXIT_FAILURE);
+    }
+    this_turn->rbtln_next = (void*) 0;
+    if(last_turn) {
+        this_turn->rbtln_prev = last_turn;
+        last_turn->rbtln_next = this_turn;
+    } else {
+        this_turn->rbtln_prev = (void*) 0;
+        rbg->rbg_first_turn = this_turn;
+    }
+    rbg->rbg_current_turn = this_turn;
+
+    struct RubikTurn* rbt = &(this_turn->rbtln_turn);
+    rbt->rbt_dir = d;
+    rbt->rbt_turn = t;
+    /* void (*turnFunctions[4])(struct Rubik* const, R_turn const) = { */
+        /* TurnRowLeft, TurnRowRight, TurnColumnUp, TurnColumnDown */
+    /* }; */
+    /* (*turnFunctions[d])(rbg->rbg_rubik, t); */
+    TurnRubik(rbg->rbg_rubik, t, d);
+    return rbt;
+}
+
+unsigned long MaxTurnNumberRubikGame(struct RubikGame* rbg) {
+    unsigned long nr_turns = 0;
+    if(rbg->rbg_first_turn) {
+        ++nr_turns;
+        struct RubikTurnListNode* last_turn = rbg->rbg_first_turn;
+        while(last_turn->rbtln_next) {
+            ++nr_turns;
+            last_turn = last_turn->rbtln_next;
+        }
+    }
+    return nr_turns;
+}
+
+unsigned long CurrentTurnNumberRubikGame(struct RubikGame* rbg) {
+    unsigned long nr_turns = 0;
+    if(rbg->rbg_first_turn) {
+        ++nr_turns;
+        struct RubikTurnListNode* last_turn = rbg->rbg_first_turn;
+        /* while(last_turn->rbtln_next && last_turn != rbg->rbg_current_turn) { */
+        while(last_turn->rbtln_next && last_turn != rbg->rbg_current_turn) {
+            ++nr_turns;
+            last_turn = last_turn->rbtln_next;
+        }
+    }
+    return nr_turns;
+}
+
+static struct RubikTurnListNode* LastTurn(struct RubikGame* const game) {
+    struct RubikTurnListNode* last_turn = (void*) 0;
+    if(game->rbg_first_turn) {
+        last_turn = game->rbg_first_turn;
+        while(last_turn->rbtln_next) {
+            last_turn = last_turn->rbtln_next;
+        }
+    }
+    return last_turn;
+}
+
+struct RubikTurn* UndoTurnRubikGame(struct RubikGame* const game) {
+    struct RubikTurnListNode* prev_turn = (void*) 0;
+    if(game->rbg_current_turn) {
+        struct RubikTurnListNode* curr_turn = game->rbg_current_turn;
+        struct RubikTurnListNode* prev_turn = curr_turn->rbtln_prev;
+
+        /* Reverse current turn */
+        R_dir d = R_dir_opp[curr_turn->rbtln_turn.rbt_dir];
+        R_turn t = curr_turn->rbtln_turn.rbt_turn;
+        TurnRubik(game->rbg_rubik, t, d);
+        game->rbg_current_turn = prev_turn;
+    }
+    struct RubikTurn* rbt = (void*) 0;
+    if(prev_turn)
+        rbt = &(prev_turn->rbtln_turn);
+    return rbt;
+}
+
+struct RubikTurn* RedoTurnRubikGame(struct RubikGame* const game) {
 }
 
