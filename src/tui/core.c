@@ -216,7 +216,7 @@ int ncurses_run(void) {
 
     WINDOW* turns_win = newwin(4, 20, 20, 60);
     DrawTurnsWindow(turns_win);
-    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), MaxTurnNumberRubikGame(g), (void*) 0, (void*) 0);
+    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), (void*) 0, (void*) 0);
 
     /* Main loop */
     raw();
@@ -256,16 +256,17 @@ int ncurses_run(void) {
                 for(size_t i = 0; i < 6; ++i) {
                     ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
                 }
-                UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), MaxTurnNumberRubikGame(g), (void*) 0, (void*) 0);
+                UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), (void*) 0, (void*) 0);
                 break;
             case 'z':
                 ; /* Silly limitation:
                     * https://stackoverflow.com/questions/8384388/variable-declaration-after-goto-label */
-                struct RubikTurn* prev = UndoTurnRubikGame(g);
+                struct RubikTurn* new_curr_turn = UndoTurnRubikGame(g);
                 for(size_t i = 0; i < 6; ++i) {
                     ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
                 }
-                UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), MaxTurnNumberRubikGame(g), prev, (void*) 0);
+                /* UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), new_curr_turn, NextTurnRubikGame(g)); */
+                UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), CurrentTurnRubikGame(g), 0);
                 break;
             case KEY_LEFT:
                 /* Light up wanted direction arrows. */
@@ -371,7 +372,7 @@ int ncurses_run(void) {
 #endif
                     struct RubikTurn* t = PlayerTurnRubikGame(g, prev_input, turn);
                     assert(t);
-                    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), MaxTurnNumberRubikGame(g), t, (void*) 0);
+                    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), t, (void*) 0);
                     for(size_t i = 0; i < 6; ++i) {
                         ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
                     }

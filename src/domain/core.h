@@ -64,7 +64,7 @@ struct RubikTurnListNode {
  */
 struct RubikGame {
     struct Rubik* rbg_rubik;
-    struct RubikTurnListNode* rbg_first_turn;
+    struct RubikTurnListNode* rbg_first_turn; /* Begin list */
     /* struct RubikTurnListNode* rbg_first_player_turn; */
     struct RubikTurnListNode* rbg_current_turn;
 };
@@ -154,7 +154,7 @@ struct RubikTurn* PlayerTurnRubikGame(struct RubikGame* game, R_dir const d, R_t
 /**
  * Get the number of turns made.
  */
-unsigned long MaxTurnNumberRubikGame(struct RubikGame* rbg);
+unsigned long LastTurnNumberRubikGame(struct RubikGame* rbg);
 
 /**
  * Get the number of turns until and including current turn.
@@ -175,6 +175,20 @@ struct RubikTurn* UndoTurnRubikGame(struct RubikGame* const game);
  * Redo next turn, if exists.
  */
 struct RubikTurn* RedoTurnRubikGame(struct RubikGame* const game);
+
+/**
+ * Return pointer to the current turn, i.e. the previous turn.
+ * If no turns have been made returns (void*) 0.
+ */
+struct RubikTurn* CurrentTurnRubikGame(struct RubikGame const* const game);
+
+/**
+ * Return pointer to the next turn. Only possible if one or more
+ * turns have been undone.
+ * If no turns have been made or if current turn is the last turn,
+ * returns (void*) 0.
+ */
+struct RubikTurn* NextTurnRubikGame(struct RubikGame const* const game);
 
 #endif
 
