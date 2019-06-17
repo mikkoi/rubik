@@ -49,20 +49,25 @@ static void ResetMoveWindow(WINDOW* win) {
     DrawMoveWindow(win);
 }
 static void DrawTurnsWindow(WINDOW* win) {
-    mvwprintw(win, 0, 0, "Turns: ");
-    mvwprintw(win, 1, 0, "# ");
-    mvwprintw(win, 1, 0, "Last: ");
+    mvwprintw(win, 0, 0, "Turn: ");
+    mvwprintw(win, 1, 0, "Curr: ");
+    mvwprintw(win, 2, 0, "Next: ");
     wrefresh(win);
 }
 static void UpdateTurnsWindows(WINDOW* win,
         unsigned long nr_turns, unsigned long nr_max_turns, struct RubikTurn* rbt, struct RubikTurn* rbt_next) {
-    mvwprintw(win, 1, 0, "Done: %lu (%lu)", nr_turns, nr_max_turns);
-    if(rbt) {
-        mvwprintw(win, 2, 0, "Curr: %s %s.", R_dir_as_string(rbt->rbt_dir), R_turn_as_string(rbt->rbt_turn));
-    }
-    if(rbt_next) {
+    mvwprintw(win, 0, 0, "Turn: %lu / %lu", nr_turns, nr_max_turns);
+
+    if(rbt)
+        mvwprintw(win, 1, 0, "Curr: %s %s.", R_dir_as_string(rbt->rbt_dir), R_turn_as_string(rbt->rbt_turn));
+    else
+        mvwprintw(win, 1, 0, "Curr:       ");
+
+    if(rbt_next)
         mvwprintw(win, 2, 0, "Next: %s %s.", R_dir_as_string(rbt->rbt_dir), R_turn_as_string(rbt->rbt_turn));
-    }
+    else
+        mvwprintw(win, 2, 0, "Next:       ");
+
     wrefresh(win);
 }
 static void DrawRubikSide(WINDOW* win) {
@@ -216,7 +221,7 @@ int ncurses_run(void) {
 
     WINDOW* turns_win = newwin(4, 20, 20, 60);
     DrawTurnsWindow(turns_win);
-    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), (void*) 0, (void*) 0);
+    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), CurrentTurnRubikGame(g), NextTurnRubikGame(g));
 
     /* Main loop */
     raw();
@@ -261,12 +266,15 @@ int ncurses_run(void) {
             case 'z':
                 ; /* Silly limitation:
                     * https://stackoverflow.com/questions/8384388/variable-declaration-after-goto-label */
-                struct RubikTurn* new_curr_turn = UndoTurnRubikGame(g);
+                /* struct RubikTurn* new_curr_turn = UndoTurnRubikGame(g); */
+                UndoTurnRubikGame(g);
                 for(size_t i = 0; i < 6; ++i) {
                     ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
                 }
                 /* UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), new_curr_turn, NextTurnRubikGame(g)); */
-                UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), CurrentTurnRubikGame(g), 0);
+                UpdateTurnsWindows(turns_win,
+                        CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g),
+                        CurrentTurnRubikGame(g), 0);
                 break;
             case KEY_LEFT:
                 /* Light up wanted direction arrows. */

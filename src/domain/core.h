@@ -154,14 +154,14 @@ struct RubikTurn* PlayerTurnRubikGame(struct RubikGame* game, R_dir const d, R_t
 /**
  * Get the number of turns made.
  */
-unsigned long LastTurnNumberRubikGame(struct RubikGame* rbg);
+unsigned long LastTurnNumberRubikGame(struct RubikGame const* const g);
 
 /**
  * Get the number of turns until and including current turn.
  * (current can be earlier than the last turn in the list
  * if player has undone (UndoTurnRubikGame()) turns.
  */
-unsigned long CurrentTurnNumberRubikGame(struct RubikGame* rbg);
+unsigned long CurrentTurnNumberRubikGame(struct RubikGame const* const g);
 
 /**
  * Undo previous turn.
