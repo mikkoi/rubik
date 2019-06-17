@@ -261,7 +261,7 @@ int ncurses_run(void) {
             case 'z':
                 ; /* Silly limitation:
                     * https://stackoverflow.com/questions/8384388/variable-declaration-after-goto-label */
-                struct RubikTurn* prev = UndoTurnRubikGame(r);
+                struct RubikTurn* prev = UndoTurnRubikGame(g);
                 for(size_t i = 0; i < 6; ++i) {
                     ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
                 }
