@@ -8,6 +8,7 @@
 #include <ncurses.h>
 
 #include "../project.h"
+#include "rubik.h"
 #include "core.h"
 #include "../domain/core.h"
 
@@ -134,9 +135,9 @@ int ncurses_run(void) {
     /* Init other parts of the TUI */
     WINDOW* header_win = newwin(1, 79, 0, 0);
 #ifdef NDEBUG
-	mvwprintw(header_win, 0, 0, "%s", "RUBIK");
+	mvwprintw(header_win, 0, 0, "%s", "RUBIK" RUBIK_PROJECT_VERSION);
 #else
-	mvwprintw(header_win, 0, 0, "%s", "RUBIK --- THIS IS DEVELOPMENT BUILD!");
+	mvwprintw(header_win, 0, 0, "%s", "RUBIK " RUBIK_PROJECT_VERSION " --- THIS IS DEVELOPMENT BUILD!");
 #endif
     wrefresh(header_win);
 
