@@ -73,7 +73,7 @@ string(APPEND C_AND_CXX_COMPILER_FLAGS
     " -Wformat-security  -Wformat-nonliteral"
     " -Wmissing-format-attribute"
     " -Winline"
-    " -Wincompatible-pointer-types"
+    # " -Wno-incompatible-pointer-types"
     # https://dwheeler.com/secure-programs/Secure-Programs-HOWTO.html#C-CPP
     " -funsigned-char" # forces unspecified "char"s to be unsigned
     )
