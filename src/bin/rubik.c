@@ -12,23 +12,26 @@
 #include <rubik.h>
 #include "../tui/core.h"
 
-void print_usage(char const*);
-void print_usage(char const* program_name) {
-    fprintf(stderr, "Usage: %s [-hlw] [file...]\n", program_name);
+#define RUBIK_COMMAND_LINE_OPTIONS "?hV"
+
+void print_usage(char const* const);
+void print_usage(char const* const program_name) {
+    fprintf(stderr, "Usage: %s [-%s]\n", program_name, RUBIK_COMMAND_LINE_OPTIONS);
 }
 
 int main(int argc, char* argv[argc+1]) {
     setlocale(LC_ALL, "");
     int opt;
 
-    while ((opt = getopt(argc, argv, "Vh")) != -1) {
+    while ((opt = getopt(argc, argv, RUBIK_COMMAND_LINE_OPTIONS)) != -1) {
         switch (opt) {
-        case 'V':
-            fprintf(stdout, "%s\n", RUBIK_PROJECT_VERSION);
-            exit(EXIT_SUCCESS);
-            break;
+        case '?':
         case 'h':
             print_usage(argv[0]);
+            exit(EXIT_SUCCESS);
+            break;
+        case 'V':
+            fprintf(stdout, "%s\n", RUBIK_PROJECT_VERSION);
             exit(EXIT_SUCCESS);
             break;
         default:
