@@ -56,17 +56,22 @@ static void DrawTurnsWindow(WINDOW* win) {
 }
 static void UpdateTurnsWindows(WINDOW* win,
         unsigned long nr_turns, unsigned long nr_max_turns, struct RubikTurn* rbt, struct RubikTurn* rbt_next) {
+    mvwprintw(win, 0, 0, "Turn:              ", nr_turns, nr_max_turns);
     mvwprintw(win, 0, 0, "Turn: %lu / %lu", nr_turns, nr_max_turns);
 
-    if(rbt)
+    if(rbt) {
+        mvwprintw(win, 1, 0, "Curr:              ");
         mvwprintw(win, 1, 0, "Curr: %s %s.", R_dir_as_string(rbt->rbt_dir), R_turn_as_string(rbt->rbt_turn));
-    else
-        mvwprintw(win, 1, 0, "Curr:       ");
+    } else {
+        mvwprintw(win, 1, 0, "Curr:              ");
+    }
 
-    if(rbt_next)
+    if(rbt_next) {
+        mvwprintw(win, 2, 0, "Next:              ");
         mvwprintw(win, 2, 0, "Next: %s %s.", R_dir_as_string(rbt->rbt_dir), R_turn_as_string(rbt->rbt_turn));
-    else
-        mvwprintw(win, 2, 0, "Next:       ");
+    } else {
+        mvwprintw(win, 2, 0, "Next:              ");
+    }
 
     wrefresh(win);
 }
