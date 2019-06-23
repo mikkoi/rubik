@@ -25,7 +25,7 @@ typedef enum {
 
 /* Turning */
 typedef enum {
-    Turn_Col_1 = 0, Turn_Col_2, Turn_Col_3, Turn_Row_1, Turn_Row_2, Turn_Row_3
+    Turn_Col_1 = 0, Turn_Col_2, Turn_Col_3, Turn_Row_1, Turn_Row_2, Turn_Row_3, NoTurn
 } R_turn;
 typedef enum {
     Left = 0, Right, Up, Down, NoDir
@@ -177,6 +177,12 @@ struct RubikTurn* UndoTurnRubikGame(struct RubikGame* const game);
 struct RubikTurn* RedoTurnRubikGame(struct RubikGame* const game);
 
 /**
+ * Return pointer to the first turn, i.e. the beginning of the list.
+ * If no turns have been made returns (void*) 0.
+ */
+struct RubikTurn* FirstTurnRubikGame(struct RubikGame const* const game);
+
+/**
  * Return pointer to the current turn, i.e. the previous turn.
  * If no turns have been made returns (void*) 0.
  */
@@ -187,8 +193,11 @@ struct RubikTurn* CurrentTurnRubikGame(struct RubikGame const* const game);
  * turns have been undone.
  * If no turns have been made or if current turn is the last turn,
  * returns (void*) 0.
+ * if parameter turn is NULL, returns void* 0 if no turns are made, otherwise
+ * returns the first turn.
  */
-struct RubikTurn* NextTurnRubikGame(struct RubikGame const* const game);
+/* struct RubikTurn* NextTurnRubikGame(struct RubikGame const* const game); */
+struct RubikTurn const* NextTurnRubikGame(struct RubikGame const* const game, struct RubikTurn const* const turn);
 
 #endif
 

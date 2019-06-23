@@ -289,11 +289,17 @@ struct RubikGame* StartRubikGame(void) {
 static struct RubikTurnListNode* RemoveTurnsFromEnd(struct RubikGame* g, struct RubikTurnListNode* until_turn) {
     struct RubikTurnListNode* last_turn = LastTurn(g);
     assert(last_turn);
-    while(last_turn->rbtln_prev != until_turn) {
+    while(last_turn != until_turn) {
         last_turn = last_turn->rbtln_prev;
-        free(last_turn->rbtln_next);
+        if(last_turn) {
+            free(last_turn->rbtln_next);
+            last_turn->rbtln_next = (void*) 0;
+        } else {
+            /* We have backed all the way to the beginning! */
+            free(g->rbg_first_turn->rbtln_next);
+            g->rbg_first_turn = (void*) 0;
+        }
     }
-    last_turn->rbtln_next = (void*) 0;
     return last_turn;
 }
 
@@ -406,6 +412,13 @@ struct RubikTurn* UndoTurnRubikGame(struct RubikGame* const game) {
     return rbt;
 }
 
+struct RubikTurn* FirstTurnRubikGame(struct RubikGame const* const game) {
+    if(game->rbg_first_turn)
+        return &(game->rbg_first_turn->rbtln_turn);
+    else
+        return (void*) 0;
+}
+
 struct RubikTurn* CurrentTurnRubikGame(struct RubikGame const* const game) {
     if(game->rbg_current_turn)
         return &(game->rbg_current_turn->rbtln_turn);
@@ -413,13 +426,21 @@ struct RubikTurn* CurrentTurnRubikGame(struct RubikGame const* const game) {
         return (void*) 0;
 }
 
-struct RubikTurn* NextTurnRubikGame(struct RubikGame const* const game) {
+struct RubikTurn const* NextTurnRubikGame(struct RubikGame const* const game, struct RubikTurn const* const turn) {
     struct RubikTurn* next_turn = (void*) 0;
-    if(game->rbg_current_turn) {
-        struct RubikTurnListNode* const next_node = game->rbg_current_turn->rbtln_next;
-        assert(next_node);
-        next_turn = &(next_node->rbtln_turn);
-        assert(next_turn);
+    if(turn && game->rbg_first_turn) {
+        struct RubikTurnListNode* next_node = game->rbg_first_turn;
+        while(next_node && &(next_node->rbtln_turn) != turn) {
+            next_node = next_node->rbtln_next;
+        }
+        if(next_node && next_node->rbtln_next) {
+            next_node = next_node->rbtln_next;
+            assert(next_node);
+            next_turn = &(next_node->rbtln_turn);
+            assert(next_turn);
+        }
+    } else if(!turn && game->rbg_first_turn) {
+        next_turn = &(game->rbg_first_turn->rbtln_turn);
     }
     return next_turn;
 }

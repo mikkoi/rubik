@@ -55,7 +55,8 @@ static void DrawTurnsWindow(WINDOW* win) {
     wrefresh(win);
 }
 static void UpdateTurnsWindows(WINDOW* win,
-        unsigned long nr_turns, unsigned long nr_max_turns, struct RubikTurn* rbt, struct RubikTurn* rbt_next) {
+        unsigned long nr_turns, unsigned long nr_max_turns,
+        struct RubikTurn const* const rbt, struct RubikTurn const* const rbt_next) {
     mvwprintw(win, 0, 0, "Turn:              ", nr_turns, nr_max_turns);
     mvwprintw(win, 0, 0, "Turn: %lu / %lu", nr_turns, nr_max_turns);
 
@@ -226,7 +227,9 @@ int ncurses_run(void) {
 
     WINDOW* turns_win = newwin(4, 20, 20, 60);
     DrawTurnsWindow(turns_win);
-    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), CurrentTurnRubikGame(g), NextTurnRubikGame(g));
+    struct RubikTurn const* const curr_turn = CurrentTurnRubikGame(g);
+    struct RubikTurn const* const next_turn = NextTurnRubikGame(g, curr_turn);
+    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), curr_turn, next_turn);
 
     /* Main loop */
     raw();
@@ -241,6 +244,16 @@ int ncurses_run(void) {
         assert(AssertRubik(r));
 #if !defined(NDEBUG)
         mvwprintw(stdscr, 27, 0, "DEBUG: prev_input: %5s.", R_dir_as_string(prev_input));
+
+        struct RubikTurn const* turn = FirstTurnRubikGame(g);
+        for(int i = 27; i < (LINES - 1); ++i) {
+            R_dir const d = turn ? turn->rbt_dir : NoDir;
+            R_turn const t = turn ? turn->rbt_turn : NoTurn;
+            mvwprintw(stdscr, i, 30, "   .             ");
+            mvwprintw(stdscr, i, 30, "% 3d. %- 5s %- 5s", i-26, R_dir_as_string(d), R_turn_as_string(t));
+            if(turn)
+                turn = NextTurnRubikGame(g, turn);
+        }
 #endif
         int ch = getch();
 #if !defined(NDEBUG)
