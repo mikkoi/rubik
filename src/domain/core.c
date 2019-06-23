@@ -335,9 +335,18 @@ struct RubikTurn* PlayerTurnRubikGame(struct RubikGame* g, R_dir const d, R_turn
     /* If the current turn is not last, it means player has undone
      * one or more turns.
      * Delete the following turns to free their memory.
-     * Not implemented: if this_turn is equal to next turn, just move
-     * g->rbg_current_turn pointer.
+     *
+     * if this_turn is equal to next turn, just move
+     * g->rbg_current_turn pointer to the next turn.
      */
+    if(curr_turn && curr_turn->rbtln_next) {
+        struct RubikTurnListNode* next_turn = curr_turn->rbtln_next;
+        if(next_turn->rbtln_turn.rbt_dir == d && next_turn->rbtln_turn.rbt_turn == t) {
+            g->rbg_current_turn = g->rbg_current_turn->rbtln_next;
+            TurnRubik(g->rbg_rubik, t, d);
+            return &(g->rbg_current_turn->rbtln_turn);
+        }
+    }
     if(curr_turn != last_turn) {
         last_turn = RemoveTurnsFromEnd(g, curr_turn);
     }

@@ -60,18 +60,14 @@ static void UpdateTurnsWindows(WINDOW* win,
     mvwprintw(win, 0, 0, "Turn:              ", nr_turns, nr_max_turns);
     mvwprintw(win, 0, 0, "Turn: %lu / %lu", nr_turns, nr_max_turns);
 
+    mvwprintw(win, 1, 0, "Curr:              ");
     if(rbt) {
-        mvwprintw(win, 1, 0, "Curr:              ");
         mvwprintw(win, 1, 0, "Curr: %s %s.", R_dir_as_string(rbt->rbt_dir), R_turn_as_string(rbt->rbt_turn));
-    } else {
-        mvwprintw(win, 1, 0, "Curr:              ");
     }
 
+    mvwprintw(win, 2, 0, "Next:              ");
     if(rbt_next) {
-        mvwprintw(win, 2, 0, "Next:              ");
-        mvwprintw(win, 2, 0, "Next: %s %s.", R_dir_as_string(rbt->rbt_dir), R_turn_as_string(rbt->rbt_turn));
-    } else {
-        mvwprintw(win, 2, 0, "Next:              ");
+        mvwprintw(win, 2, 0, "Next: %s %s.", R_dir_as_string(rbt_next->rbt_dir), R_turn_as_string(rbt_next->rbt_turn));
     }
 
     wrefresh(win);
@@ -206,7 +202,7 @@ int ncurses_run(void) {
     WINDOW* keys_win = newwin(10, 11, 2, 65);
     mvwprintw(keys_win, 0, 0, "q Quit");
     mvwprintw(keys_win, 1, 0, "n New Game");
-    mvwprintw(keys_win, 2, 0, "r Randomize");
+    mvwprintw(keys_win, 2, 0, "s Randomize");
     mvwprintw(keys_win, 3, 0, "z Undo");
     mvwprintw(keys_win, 4, 0, "Z Redo");
     wrefresh(keys_win);
@@ -281,6 +277,15 @@ int ncurses_run(void) {
                 }
                 UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), (void*) 0, (void*) 0);
                 break;
+            case 's':
+                SeedRandomRubikColour((int unsigned) time(NULL));
+                ShuffleRubik(r);
+                r = g->rbg_rubik;
+                for(size_t i = 0; i < 6; ++i) {
+                    ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
+                }
+                UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), (void*) 0, (void*) 0);
+                break;
             case 'z':
                 ; /* Silly limitation:
                     * https://stackoverflow.com/questions/8384388/variable-declaration-after-goto-label */
@@ -289,10 +294,9 @@ int ncurses_run(void) {
                 for(size_t i = 0; i < 6; ++i) {
                     ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
                 }
-                /* UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), new_curr_turn, NextTurnRubikGame(g)); */
                 UpdateTurnsWindows(turns_win,
                         CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g),
-                        CurrentTurnRubikGame(g), 0);
+                        CurrentTurnRubikGame(g), NextTurnRubikGame(g, CurrentTurnRubikGame(g)));
                 break;
             case KEY_LEFT:
                 /* Light up wanted direction arrows. */
@@ -398,7 +402,7 @@ int ncurses_run(void) {
 #endif
                     struct RubikTurn* t = PlayerTurnRubikGame(g, prev_input, turn);
                     assert(t);
-                    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), t, (void*) 0);
+                    UpdateTurnsWindows(turns_win, CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g), t, NextTurnRubikGame(g, t));
                     for(size_t i = 0; i < 6; ++i) {
                         ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
                     }
