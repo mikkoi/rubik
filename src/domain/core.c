@@ -263,6 +263,7 @@ void ShuffleRubik(struct Rubik* const r) {
         assert(0 == colours[i]); /* Double check we used all colours, 9 each */
 }
 
+/* Traverse the turns list to return the last turn made */
 static struct RubikTurnListNode* LastTurn(struct RubikGame* const game) {
     struct RubikTurnListNode* last_turn = (void*) 0;
     if(game->rbg_first_turn) {
@@ -286,6 +287,9 @@ struct RubikGame* StartRubikGame(void) {
     return g;
 }
 
+/* Remove turns starting from the end of the list.
+ * If until_turn is nullptr, removes all turns.
+ */
 static struct RubikTurnListNode* RemoveTurnsFromEnd(struct RubikGame* g, struct RubikTurnListNode* until_turn) {
     struct RubikTurnListNode* last_turn = LastTurn(g);
     assert(last_turn);
@@ -324,25 +328,26 @@ void FinishRubikGame(struct RubikGame* g) {
     free(g);
 }
 
-/* void ShuffleTurnRubikGame(struct RubikGame* const game) { */
-/* } */
-
 struct RubikTurn* PlayerTurnRubikGame(struct RubikGame* g, R_dir const d, R_turn const t) {
+    assert(g);
     /* Is the current turn, i.e. the previous turn, the last turn? */
     struct RubikTurnListNode* last_turn = LastTurn(g);
-    struct RubikTurnListNode* curr_turn = g->rbg_current_turn;
+    struct RubikTurnListNode* const curr_turn = g->rbg_current_turn;
+    struct RubikTurnListNode* const next_turn =
+        curr_turn ? curr_turn->rbtln_next : g->rbg_first_turn;
+        /* next_turn is either the curr_turn's next turn or the first turn, */
+        /* if first turn exists, otherwise nullptr */
 
     /* If the current turn is not last, it means player has undone
      * one or more turns.
      * Delete the following turns to free their memory.
      *
-     * if this_turn is equal to next turn, just move
+     * if this new turn (params d and t) is equal to next turn, just move
      * g->rbg_current_turn pointer to the next turn.
      */
-    if(curr_turn && curr_turn->rbtln_next) {
-        struct RubikTurnListNode* next_turn = curr_turn->rbtln_next;
-        if(next_turn->rbtln_turn.rbt_dir == d && next_turn->rbtln_turn.rbt_turn == t) {
-            g->rbg_current_turn = g->rbg_current_turn->rbtln_next;
+    if(next_turn) {
+        if(d == next_turn->rbtln_turn.rbt_dir && t == next_turn->rbtln_turn.rbt_turn) {
+            g->rbg_current_turn = next_turn;
             TurnRubik(g->rbg_rubik, t, d);
             return &(g->rbg_current_turn->rbtln_turn);
         }
@@ -403,7 +408,9 @@ unsigned long CurrentTurnNumberRubikGame(struct RubikGame const* const g) {
 }
 
 struct RubikTurn* UndoTurnRubikGame(struct RubikGame* const game) {
-    if(game->rbg_current_turn) {
+    if(!game->rbg_current_turn) {
+        return (void*) 0;
+    } else {
         struct RubikTurnListNode* curr_turn = game->rbg_current_turn;
         struct RubikTurn* curr_t = &(curr_turn->rbtln_turn);
         struct RubikTurnListNode* prev_turn = curr_turn->rbtln_prev;
@@ -413,7 +420,7 @@ struct RubikTurn* UndoTurnRubikGame(struct RubikGame* const game) {
         R_dir d = R_dir_opp[curr_turn->rbtln_turn.rbt_dir];
         R_turn t = curr_turn->rbtln_turn.rbt_turn;
         TurnRubik(game->rbg_rubik, t, d);
-        game->rbg_current_turn = prev_turn;
+        game->rbg_current_turn = prev_turn; /* Also ok when prev_turn is null. */
     }
     struct RubikTurn* rbt = (void*) 0;
     if(game->rbg_current_turn)
@@ -454,6 +461,11 @@ struct RubikTurn const* NextTurnRubikGame(struct RubikGame const* const game, st
     return next_turn;
 }
 
-/* struct RubikTurn* RedoTurnRubikGame(struct RubikGame* const game) { */
-/* } */
+struct RubikTurn* RedoTurnRubikGame(struct RubikGame* const g) {
+    struct RubikTurn const* const curr_turn = CurrentTurnRubikGame(g);
+    struct RubikTurn const* const next_turn = NextTurnRubikGame(g, curr_turn);
+    if(!next_turn) /* No next turn. */
+        return (void*) 0;
+    return PlayerTurnRubikGame(g, next_turn->rbt_dir, next_turn->rbt_turn);
+}
 

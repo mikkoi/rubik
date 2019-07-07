@@ -58,15 +58,13 @@ struct RubikTurnListNode {
     struct RubikTurn rbtln_turn;
 };
 
-/* A Game of Rubik */
-/* The cube is first shuffled, those turns are first in the list.
- * then come player's turns.
+/**
+ * A Game of Rubik
  */
 struct RubikGame {
     struct Rubik* rbg_rubik;
-    struct RubikTurnListNode* rbg_first_turn; /* Begin list */
-    /* struct RubikTurnListNode* rbg_first_player_turn; */
-    struct RubikTurnListNode* rbg_current_turn;
+    struct RubikTurnListNode* rbg_first_turn; /* Begin list or null */
+    struct RubikTurnListNode* rbg_current_turn; /* Current turn or null */
 };
 
 /* Internal functions */
@@ -164,27 +162,41 @@ unsigned long LastTurnNumberRubikGame(struct RubikGame const* const g);
 unsigned long CurrentTurnNumberRubikGame(struct RubikGame const* const g);
 
 /**
- * Undo previous turn.
- * If no previous turn exists, do nothing.
+ * Undo previous turn, i.e. the current turn.
+ *
  * Return RubikTurn* of the previous previous turn
  * (becoming the "current turn", i.e. previous turn).
+ *
+ * @param game struct RubikGame const* const
+ * @return pointer to the new current turn or null pointer, i.e. (void*) 0.
+ * @note If no previous turn exists, do nothing and return (void*) 0.
  */
 struct RubikTurn* UndoTurnRubikGame(struct RubikGame* const game);
 
 /**
  * Redo next turn, if exists.
+ *
+ * If no next turn, do nothing and return null pointer, (void*) 0.
+ *
+ * @param game struct RubikGame const* const
  */
 struct RubikTurn* RedoTurnRubikGame(struct RubikGame* const game);
 
 /**
- * Return pointer to the first turn, i.e. the beginning of the list.
- * If no turns have been made returns (void*) 0.
+ * Get the first turn of the game.
+ *
+ * @param game struct RubikGame const* const
+ * @return pointer to the first turn made
+ * @note If no turns have been made, returns (void*) 0.
  */
 struct RubikTurn* FirstTurnRubikGame(struct RubikGame const* const game);
 
 /**
- * Return pointer to the current turn, i.e. the previous turn.
- * If no turns have been made returns (void*) 0.
+ * Get the current turn of the game, i.e. the previous turn made.
+ *
+ * @param game struct RubikGame const* const
+ * @return pointer to the current turn
+ * @note If no turns have been made, returns (void*) 0.
  */
 struct RubikTurn* CurrentTurnRubikGame(struct RubikGame const* const game);
 

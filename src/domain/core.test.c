@@ -4,6 +4,26 @@
 #include "../test_suite.h"
 #include "core.h"
 
+void assert_sqr(struct Rubik const* const, R_square const,
+        R_colour const, R_colour const, R_colour const,
+        R_colour const, R_colour const, R_colour const,
+        R_colour const, R_colour const, R_colour const);
+
+void assert_sqr(struct Rubik const* const r, R_square const s,
+        R_colour const r1c1_c, R_colour const r1c2_c, R_colour const r1c3_c,
+        R_colour const r2c1_c, R_colour const r2c2_c, R_colour const r2c3_c,
+        R_colour const r3c1_c, R_colour const r3c2_c, R_colour const r3c3_c) {
+    ck_assert(GetColour(r, s, Row_1, Col_1) == r1c1_c);
+    ck_assert(GetColour(r, s, Row_1, Col_2) == r1c2_c);
+    ck_assert(GetColour(r, s, Row_1, Col_3) == r1c3_c);
+    ck_assert(GetColour(r, s, Row_2, Col_1) == r2c1_c);
+    ck_assert(GetColour(r, s, Row_2, Col_2) == r2c2_c);
+    ck_assert(GetColour(r, s, Row_2, Col_3) == r2c3_c);
+    ck_assert(GetColour(r, s, Row_3, Col_1) == r3c1_c);
+    ck_assert(GetColour(r, s, Row_3, Col_2) == r3c2_c);
+    ck_assert(GetColour(r, s, Row_3, Col_3) == r3c3_c);
+}
+
 START_TEST (testCreateRubik) {
     struct Rubik* r = CreateRubik(3);
     ck_assert(GetColour(r, Sqr_1, Row_1, Col_1) == White);
@@ -828,66 +848,238 @@ START_TEST (testPlayFirst) {
     ck_assert(Turn_Col_1 == turn5->rbt_turn);
     ck_assert(5 == CurrentTurnNumberRubikGame(g));
 
-    ck_assert(GetColour(r, Sqr_1, Row_1, Col_1) == Red);
-    ck_assert(GetColour(r, Sqr_1, Row_1, Col_2) == White);
-    ck_assert(GetColour(r, Sqr_1, Row_1, Col_3) == White);
-    ck_assert(GetColour(r, Sqr_1, Row_2, Col_1) == Red);
-    ck_assert(GetColour(r, Sqr_1, Row_2, Col_2) == White);
-    ck_assert(GetColour(r, Sqr_1, Row_2, Col_3) == White);
-    ck_assert(GetColour(r, Sqr_1, Row_3, Col_1) == Red);
-    ck_assert(GetColour(r, Sqr_1, Row_3, Col_2) == White);
-    ck_assert(GetColour(r, Sqr_1, Row_3, Col_3) == White);
-    ck_assert(GetColour(r, Sqr_2, Row_1, Col_1) == Green);
-    ck_assert(GetColour(r, Sqr_2, Row_1, Col_2) == Green);
-    ck_assert(GetColour(r, Sqr_2, Row_1, Col_3) == Green);
-    ck_assert(GetColour(r, Sqr_2, Row_2, Col_1) == Green);
-    ck_assert(GetColour(r, Sqr_2, Row_2, Col_2) == Green);
-    ck_assert(GetColour(r, Sqr_2, Row_2, Col_3) == Green);
-    ck_assert(GetColour(r, Sqr_2, Row_3, Col_1) == Green);
-    ck_assert(GetColour(r, Sqr_2, Row_3, Col_2) == Green);
-    ck_assert(GetColour(r, Sqr_2, Row_3, Col_3) == Green);
-    ck_assert(GetColour(r, Sqr_3, Row_1, Col_1) == Yellow);
-    ck_assert(GetColour(r, Sqr_3, Row_1, Col_2) == Red);
-    ck_assert(GetColour(r, Sqr_3, Row_1, Col_3) == Red);
-    ck_assert(GetColour(r, Sqr_3, Row_2, Col_1) == Yellow);
-    ck_assert(GetColour(r, Sqr_3, Row_2, Col_2) == Red);
-    ck_assert(GetColour(r, Sqr_3, Row_2, Col_3) == Red);
-    ck_assert(GetColour(r, Sqr_3, Row_3, Col_1) == Yellow);
-    ck_assert(GetColour(r, Sqr_3, Row_3, Col_2) == Red);
-    ck_assert(GetColour(r, Sqr_3, Row_3, Col_3) == Red);
-    ck_assert(GetColour(r, Sqr_4, Row_1, Col_1) == Blue);
-    ck_assert(GetColour(r, Sqr_4, Row_1, Col_2) == Blue);
-    ck_assert(GetColour(r, Sqr_4, Row_1, Col_3) == Blue);
-    ck_assert(GetColour(r, Sqr_4, Row_2, Col_1) == Blue);
-    ck_assert(GetColour(r, Sqr_4, Row_2, Col_2) == Blue);
-    ck_assert(GetColour(r, Sqr_4, Row_2, Col_3) == Blue);
-    ck_assert(GetColour(r, Sqr_4, Row_3, Col_1) == Blue);
-    ck_assert(GetColour(r, Sqr_4, Row_3, Col_2) == Blue);
-    ck_assert(GetColour(r, Sqr_4, Row_3, Col_3) == Blue);
-    ck_assert(GetColour(r, Sqr_5, Row_1, Col_1) == Orange);
-    ck_assert(GetColour(r, Sqr_5, Row_1, Col_2) == Orange);
-    ck_assert(GetColour(r, Sqr_5, Row_1, Col_3) == White);
-    ck_assert(GetColour(r, Sqr_5, Row_2, Col_1) == Orange);
-    ck_assert(GetColour(r, Sqr_5, Row_2, Col_2) == Orange);
-    ck_assert(GetColour(r, Sqr_5, Row_2, Col_3) == White);
-    ck_assert(GetColour(r, Sqr_5, Row_3, Col_1) == Orange);
-    ck_assert(GetColour(r, Sqr_5, Row_3, Col_2) == Orange);
-    ck_assert(GetColour(r, Sqr_5, Row_3, Col_3) == White);
-    ck_assert(GetColour(r, Sqr_6, Row_1, Col_1) == Orange);
-    ck_assert(GetColour(r, Sqr_6, Row_1, Col_2) == Yellow);
-    ck_assert(GetColour(r, Sqr_6, Row_1, Col_3) == Yellow);
-    ck_assert(GetColour(r, Sqr_6, Row_2, Col_1) == Orange);
-    ck_assert(GetColour(r, Sqr_6, Row_2, Col_2) == Yellow);
-    ck_assert(GetColour(r, Sqr_6, Row_2, Col_3) == Yellow);
-    ck_assert(GetColour(r, Sqr_6, Row_3, Col_1) == Orange);
-    ck_assert(GetColour(r, Sqr_6, Row_3, Col_2) == Yellow);
-    ck_assert(GetColour(r, Sqr_6, Row_3, Col_3) == Yellow);
+    assert_sqr(r, Sqr_1, Red   , White , White , Red,    White , White , Red   , White , White );
+    assert_sqr(r, Sqr_2, Green , Green , Green , Green,  Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_3, Yellow, Red   , Red   , Yellow, Red   , Red   , Yellow, Red   , Red   );
+    assert_sqr(r, Sqr_4, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_5, Orange, Orange, White , Orange, Orange, White , Orange, Orange, White );
+    assert_sqr(r, Sqr_6, Orange, Yellow, Yellow, Orange, Yellow, Yellow, Orange, Yellow, Yellow);
+    FinishRubikGame(g);
+}
+END_TEST
+
+START_TEST (testTurnUndoRetrace) {
+    struct RubikGame* g = StartRubikGame();
+    struct Rubik* r = g->rbg_rubik;
+
+    ck_assert(0 == CurrentTurnNumberRubikGame(g));
+    assert_sqr(r, Sqr_1, White, White, White, White, White, White, White, White, White);
+    assert_sqr(r, Sqr_2, Green, Green, Green, Green, Green, Green, Green, Green, Green);
+    assert_sqr(r, Sqr_3, Red, Red, Red, Red, Red, Red, Red, Red, Red);
+    assert_sqr(r, Sqr_4, Blue, Blue, Blue, Blue, Blue, Blue, Blue, Blue, Blue);
+    assert_sqr(r, Sqr_5, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange);
+    assert_sqr(r, Sqr_6, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow);
+
+    PlayerTurnRubikGame(g, Up, Turn_Col_1);
+    ck_assert(1 == CurrentTurnNumberRubikGame(g));
+    PlayerTurnRubikGame(g, Up, Turn_Col_2);
+    ck_assert(2 == CurrentTurnNumberRubikGame(g));
+    PlayerTurnRubikGame(g, Up, Turn_Col_3);
+    ck_assert(3 == CurrentTurnNumberRubikGame(g));
+    PlayerTurnRubikGame(g, Up, Turn_Col_1);
+    ck_assert(4 == CurrentTurnNumberRubikGame(g));
+    assert_sqr(r, Sqr_1, Yellow, Red, Red, Yellow, Red, Red, Yellow, Red, Red);
+    assert_sqr(r, Sqr_2, Green, Green, Green, Green, Green, Green, Green, Green, Green);
+    assert_sqr(r, Sqr_3, Orange, Yellow, Yellow, Orange, Yellow, Yellow, Orange, Yellow, Yellow);
+    assert_sqr(r, Sqr_4, Blue, Blue, Blue, Blue, Blue, Blue, Blue, Blue, Blue);
+    assert_sqr(r, Sqr_5, White, White, Red, White, White, Red, White, White, Red);
+    assert_sqr(r, Sqr_6, White, Orange, Orange, White, Orange, Orange, White, Orange, Orange);
+
+    UndoTurnRubikGame(g);
+    ck_assert(3 == CurrentTurnNumberRubikGame(g));
+    ck_assert(4 == LastTurnNumberRubikGame(g));
+    assert_sqr(r, Sqr_1, Red   , Red   , Red   , Red,    Red   , Red   , Red   , Red   , Red   );
+    assert_sqr(r, Sqr_2, Green , Green , Green , Green,  Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_3, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow);
+    assert_sqr(r, Sqr_4, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_5, White , White , White , White , White , White , White , White , White );
+    assert_sqr(r, Sqr_6, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange);
+
+    /* Retrace last turn */
+    PlayerTurnRubikGame(g, Up, Turn_Col_1);
+    ck_assert(4 == CurrentTurnNumberRubikGame(g));
+    ck_assert(4 == LastTurnNumberRubikGame(g));
+    assert_sqr(r, Sqr_1, Yellow, Red, Red, Yellow, Red, Red, Yellow, Red, Red);
+    assert_sqr(r, Sqr_2, Green, Green, Green, Green, Green, Green, Green, Green, Green);
+    assert_sqr(r, Sqr_3, Orange, Yellow, Yellow, Orange, Yellow, Yellow, Orange, Yellow, Yellow);
+    assert_sqr(r, Sqr_4, Blue, Blue, Blue, Blue, Blue, Blue, Blue, Blue, Blue);
+    assert_sqr(r, Sqr_5, White, White, Red, White, White, Red, White, White, Red);
+    assert_sqr(r, Sqr_6, White, Orange, Orange, White, Orange, Orange, White, Orange, Orange);
+
+    /* Take back three turns, retrace one and make three new turns */
+    /* .. tack back */
+    UndoTurnRubikGame(g);
+    UndoTurnRubikGame(g);
+    UndoTurnRubikGame(g);
+    ck_assert(1 == CurrentTurnNumberRubikGame(g));
+    ck_assert(4 == LastTurnNumberRubikGame(g));
+    assert_sqr(r, Sqr_1, Red   , White , White , Red,    White , White , Red   , White , White );
+    assert_sqr(r, Sqr_2, Green , Green , Green , Green,  Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_3, Yellow, Red   , Red   , Yellow, Red   , Red   , Yellow, Red   , Red   );
+    assert_sqr(r, Sqr_4, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_5, Orange, Orange, White , Orange, Orange, White , Orange, Orange, White );
+    assert_sqr(r, Sqr_6, Orange, Yellow, Yellow, Orange, Yellow, Yellow, Orange, Yellow, Yellow);
+    /* .. retrace */
+    PlayerTurnRubikGame(g, Up, Turn_Col_2);
+    ck_assert(2 == CurrentTurnNumberRubikGame(g));
+    ck_assert(4 == LastTurnNumberRubikGame(g));
+    assert_sqr(r, Sqr_1, Red   , Red   , White , Red   , Red   , White , Red   , Red   , White );
+    assert_sqr(r, Sqr_2, Green , Green , Green , Green , Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_3, Yellow, Yellow, Red   , Yellow, Yellow, Red   , Yellow, Yellow, Red   );
+    assert_sqr(r, Sqr_4, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_5, Orange, White , White , Orange, White , White , Orange, White , White );
+    assert_sqr(r, Sqr_6, Orange, Orange, Yellow, Orange, Orange, Yellow, Orange, Orange, Yellow);
+    /* .. two new turns */
+    PlayerTurnRubikGame(g, Left, Turn_Row_1);
+    ck_assert(3 == CurrentTurnNumberRubikGame(g));
+    ck_assert(3 == LastTurnNumberRubikGame(g));
+    PlayerTurnRubikGame(g, Left, Turn_Row_2);
+    ck_assert(4 == CurrentTurnNumberRubikGame(g));
+    ck_assert(4 == LastTurnNumberRubikGame(g));
+    PlayerTurnRubikGame(g, Left, Turn_Row_3);
+    ck_assert(5 == CurrentTurnNumberRubikGame(g));
+    ck_assert(5 == LastTurnNumberRubikGame(g));
+    assert_sqr(r, Sqr_1, Red   , Red   , Red   , Red   , Red   , Red   , White , White , White );
+    assert_sqr(r, Sqr_2, Yellow, Yellow, Red   , Yellow, Yellow, Red   , Yellow, Yellow, Red   );
+    assert_sqr(r, Sqr_3, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_4, Orange, White , White , Orange, White , White , Orange, White , White );
+    assert_sqr(r, Sqr_5, Green , Green , Green , Green , Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_6, Yellow, Yellow, Yellow, Orange, Orange, Orange, Orange, Orange, Orange);
 
     FinishRubikGame(g);
 }
 END_TEST
 
-// cppcheck-suppress unusedFunction
+START_TEST (testTurnUndoRedo) {
+    struct RubikGame* g = StartRubikGame();
+    struct Rubik* r = g->rbg_rubik;
+
+    ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 0);
+    ck_assert_uint_eq(LastTurnNumberRubikGame(g), 0);
+    assert_sqr(r, Sqr_1, White, White, White, White, White, White, White, White, White);
+    assert_sqr(r, Sqr_2, Green, Green, Green, Green, Green, Green, Green, Green, Green);
+    assert_sqr(r, Sqr_3, Red, Red, Red, Red, Red, Red, Red, Red, Red);
+    assert_sqr(r, Sqr_4, Blue, Blue, Blue, Blue, Blue, Blue, Blue, Blue, Blue);
+    assert_sqr(r, Sqr_5, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange);
+    assert_sqr(r, Sqr_6, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow);
+
+    PlayerTurnRubikGame(g, Up, Turn_Col_1);
+    PlayerTurnRubikGame(g, Up, Turn_Col_2);
+    PlayerTurnRubikGame(g, Up, Turn_Col_3);
+    PlayerTurnRubikGame(g, Up, Turn_Col_1);
+    ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 4);
+    ck_assert_uint_eq(LastTurnNumberRubikGame(g), 4);
+    assert_sqr(r, Sqr_1, Yellow, Red   , Red   , Yellow, Red   , Red   , Yellow, Red   , Red   );
+    assert_sqr(r, Sqr_2, Green , Green , Green , Green , Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_3, Orange, Yellow, Yellow, Orange, Yellow, Yellow, Orange, Yellow, Yellow);
+    assert_sqr(r, Sqr_4, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_5, White , White , Red   , White , White , Red   , White , White , Red   );
+    assert_sqr(r, Sqr_6, White , Orange, Orange, White , Orange, Orange, White , Orange, Orange);
+
+    UndoTurnRubikGame(g);
+    UndoTurnRubikGame(g);
+    UndoTurnRubikGame(g);
+    UndoTurnRubikGame(g);
+    ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 0);
+    ck_assert_uint_eq(LastTurnNumberRubikGame(g), 4);
+    assert_sqr(r, Sqr_1, White , White , White , White , White , White , White , White , White );
+    assert_sqr(r, Sqr_2, Green , Green , Green , Green , Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_3, Red   , Red   , Red   , Red   , Red   , Red   , Red   , Red   , Red   );
+    assert_sqr(r, Sqr_4, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_5, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange);
+    assert_sqr(r, Sqr_6, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow);
+
+    struct RubikTurn* turn = (void*) 0;
+    turn = RedoTurnRubikGame(g);
+    ck_assert(Up == turn->rbt_dir && Turn_Col_1 == turn->rbt_turn);
+    ck_assert_ptr_nonnull(turn);
+    ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 1);
+    ck_assert_uint_eq(LastTurnNumberRubikGame(g), 4);
+
+    turn = RedoTurnRubikGame(g);
+    ck_assert_ptr_nonnull(turn);
+    ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 2);
+
+    turn = RedoTurnRubikGame(g);
+    turn = RedoTurnRubikGame(g);
+    ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 4);
+    ck_assert_uint_eq(LastTurnNumberRubikGame(g), 4);
+    assert_sqr(r, Sqr_1, Yellow, Red   , Red   , Yellow, Red   , Red   , Yellow, Red   , Red   );
+    assert_sqr(r, Sqr_2, Green , Green , Green , Green , Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_3, Orange, Yellow, Yellow, Orange, Yellow, Yellow, Orange, Yellow, Yellow);
+    assert_sqr(r, Sqr_4, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_5, White , White , Red   , White , White , Red   , White , White , Red   );
+    assert_sqr(r, Sqr_6, White , Orange, Orange, White , Orange, Orange, White , Orange, Orange);
+
+    FinishRubikGame(g);
+}
+END_TEST
+
+START_TEST (testTurnUndoRedoOne) {
+    struct RubikGame* g = StartRubikGame();
+    struct Rubik* r = g->rbg_rubik;
+
+    ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 0);
+    ck_assert_uint_eq(LastTurnNumberRubikGame(g)   , 0);
+    assert_sqr(r, Sqr_1, White, White, White, White, White, White, White, White, White);
+    assert_sqr(r, Sqr_2, Green, Green, Green, Green, Green, Green, Green, Green, Green);
+    assert_sqr(r, Sqr_3, Red, Red, Red, Red, Red, Red, Red, Red, Red);
+    assert_sqr(r, Sqr_4, Blue, Blue, Blue, Blue, Blue, Blue, Blue, Blue, Blue);
+    assert_sqr(r, Sqr_5, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange);
+    assert_sqr(r, Sqr_6, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow);
+
+    PlayerTurnRubikGame(g, Up, Turn_Col_1);
+    PlayerTurnRubikGame(g, Up, Turn_Col_2);
+    ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 2);
+    ck_assert_uint_eq(LastTurnNumberRubikGame(g)   , 2);
+    assert_sqr(r, Sqr_1, Red   , Red   , White , Red   , Red   , White , Red   , Red   , White );
+    assert_sqr(r, Sqr_2, Green , Green , Green , Green , Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_3, Yellow, Yellow, Red   , Yellow, Yellow, Red   , Yellow, Yellow, Red   );
+    assert_sqr(r, Sqr_4, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_5, Orange, White , White , Orange, White , White , Orange, White , White );
+    assert_sqr(r, Sqr_6, Orange, Orange, Yellow, Orange, Orange, Yellow, Orange, Orange, Yellow);
+
+    struct RubikTurn* undo_1 = UndoTurnRubikGame(g);
+    ck_assert_ptr_nonnull(undo_1);
+    struct RubikTurn* undo_2 =UndoTurnRubikGame(g);
+    ck_assert_ptr_null(undo_2);
+    ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 0);
+    ck_assert_uint_eq(LastTurnNumberRubikGame(g)   , 2);
+    assert_sqr(r, Sqr_1, White , White , White , White , White , White , White , White , White );
+    assert_sqr(r, Sqr_2, Green , Green , Green , Green , Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_3, Red   , Red   , Red   , Red   , Red   , Red   , Red   , Red   , Red   );
+    assert_sqr(r, Sqr_4, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_5, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange);
+    assert_sqr(r, Sqr_6, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow);
+
+    struct RubikTurn* redo_1 = RedoTurnRubikGame(g);
+    ck_assert_ptr_nonnull(redo_1);
+    ck_assert(Up == redo_1->rbt_dir && Turn_Col_1 == redo_1->rbt_turn);
+    ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 1);
+    ck_assert_uint_eq(LastTurnNumberRubikGame(g)   , 2);
+    assert_sqr(r, Sqr_1, Red   , White , White , Red   , White , White , Red   , White , White );
+    assert_sqr(r, Sqr_2, Green , Green , Green , Green , Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_3, Yellow, Red   , Red   , Yellow, Red   , Red   , Yellow, Red   , Red   );
+    assert_sqr(r, Sqr_4, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_5, Orange, Orange, White , Orange, Orange, White , Orange, Orange, White );
+    assert_sqr(r, Sqr_6, Orange, Yellow, Yellow, Orange, Yellow, Yellow, Orange, Yellow, Yellow);
+
+    struct RubikTurn* redo_2 = RedoTurnRubikGame(g);
+    ck_assert_ptr_nonnull(redo_2);
+    ck_assert(Up == redo_2->rbt_dir && Turn_Col_2 == redo_2->rbt_turn);
+    ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 2);
+    ck_assert_uint_eq(LastTurnNumberRubikGame(g)   , 2);
+    assert_sqr(r, Sqr_1, Red   , Red   , White , Red   , Red   , White , Red   , Red   , White );
+    assert_sqr(r, Sqr_2, Green , Green , Green , Green , Green , Green , Green , Green , Green );
+    assert_sqr(r, Sqr_3, Yellow, Yellow, Red   , Yellow, Yellow, Red   , Yellow, Yellow, Red   );
+    assert_sqr(r, Sqr_4, Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  , Blue  );
+    assert_sqr(r, Sqr_5, Orange, White , White , Orange, White , White , Orange, White , White );
+    assert_sqr(r, Sqr_6, Orange, Orange, Yellow, Orange, Orange, Yellow, Orange, Orange, Yellow);
+
+    FinishRubikGame(g);
+}
+END_TEST
+
 void add_tests(size_t const n, TFun tests[n]) {
     assert(n > 0);
     size_t i = 0;
@@ -897,6 +1089,10 @@ void add_tests(size_t const n, TFun tests[n]) {
     tests[i++] = testFillSquareWithColour;
     tests[i++] = testTurnRowLeft;
     tests[i++] = testPlayFirst;
+    tests[i++] = testTurnUndoRetrace;
+    tests[i++] = testTurnUndoRedo; /* FIXME */
+    tests[i++] = testTurnUndoRedoOne;
+    assert(i <= n);
 }
 
 

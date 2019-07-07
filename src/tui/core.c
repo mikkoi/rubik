@@ -298,6 +298,16 @@ int ncurses_run(void) {
                         CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g),
                         CurrentTurnRubikGame(g), NextTurnRubikGame(g, CurrentTurnRubikGame(g)));
                 break;
+            case 'Z':
+                ;
+                RedoTurnRubikGame(g);
+                for(size_t i = 0; i < 6; ++i) {
+                    ColorRubikSide(sqr_wins[i], 3, 3, r->con[i]);
+                }
+                UpdateTurnsWindows(turns_win,
+                        CurrentTurnNumberRubikGame(g), LastTurnNumberRubikGame(g),
+                        CurrentTurnRubikGame(g), NextTurnRubikGame(g, CurrentTurnRubikGame(g)));
+                break;
             case KEY_LEFT:
                 /* Light up wanted direction arrows. */
                 prev_input = Left;
