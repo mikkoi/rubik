@@ -25,6 +25,7 @@ add_custom_target(
             # --platform=unix64
             --verbose --quiet --inline-suppr
             --check-config
+            -I ${CMAKE_BINARY_DIR}/src
             # -I ${CMAKE_C_STANDARD_INCLUDE_DIRECTORIES}
             ${ALL_SOURCE_FILES}
             # -i ${CMAKE_CURRENT_SOURCE_DIR}/otaDATA
