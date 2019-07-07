@@ -64,7 +64,8 @@ string(APPEND C_AND_CXX_COMPILER_FLAGS
     # " -Wl"
     # " -std=c89"
     # Some of these are already part of -Wextra
-    " -Wpointer-arith -Wstrict-prototypes -O2"
+    " -Wpointer-arith -Wstrict-prototypes"
+    # " -O2"
     " -pedantic"
     " -Wmissing-prototypes -Wmissing-declarations"
     " -Wstrict-prototypes -Wpointer-arith"
