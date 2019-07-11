@@ -159,7 +159,7 @@ int ncurses_run(void) {
     /* Init other parts of the TUI */
     WINDOW* header_win = newwin(1, 79, 0, 0);
 #ifdef NDEBUG
-	mvwprintw(header_win, 0, 0, "%s", "RUBIK" RUBIK_PROJECT_VERSION);
+	mvwprintw(header_win, 0, 0, "%s", "RUBIK " RUBIK_PROJECT_VERSION);
 #else
 	mvwprintw(header_win, 0, 0, "%s", "RUBIK " RUBIK_PROJECT_VERSION " --- THIS IS DEVELOPMENT BUILD!");
 #endif
