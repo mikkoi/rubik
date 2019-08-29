@@ -1,18 +1,27 @@
 A Rubik cube simulator with a terminal UI
 
+
 # Requirements
 
 * NCurses
+
 
 # Install
 
 * git clone https://github.com/mikkoi/rubik.git
 * mkdir build-rubik && cd build-rubik
-* cmake ../rubik -DCMAKE_BUILD_TYPE=Release && make
+* cmake ../rubik -DCMAKE_BUILD_TYPE=Release -D BUILD_TESTING=False
+* If your NCurses library is not installed in a default directory, add parameter:
+* -D CURSES_INCLUDE_PATH=<ncurses_installation>
+* make
 * make install
 
 
 # Contribute
+
+If you want to contribute code, you will need to compile the project
+in Debug mode and run tests. Here is how:
+
 
 ## Check Framework
 
@@ -20,12 +29,16 @@ A Rubik cube simulator with a terminal UI
   `sudo apt-get install check` or `yum install check`.
 * Or direct from GitHub: https://github.com/libcheck/check/releases
 
+
 ## Rubik
 
 * git clone https://github.com/mikkoi/rubik.git
-* mkdir build-Release-rubik
-* cd build-Release-rubik
-* cmake -DCMAKE_BUILD_TYPE=Debug -Dcheck_ROOT=<check_installation> ../rubik
+* mkdir build-Debug-rubik && cd build-Debug-rubik
+* cmake -D CMAKE_BUILD_TYPE=Debug -D BUILD_TESTING=True -D Check_ROOT=<check_installation> -D CMAKE_INSTALL_PREFIX=../install-Debug-rubik ../rubik
+* If your NCurses library is not installed in a default directory, add parameter:
+* -D CURSES_INCLUDE_PATH=<ncurses_installation>
 * make
 * ctest
+* make install
+* ../install-Debug/rubik/bin/rubik
 
