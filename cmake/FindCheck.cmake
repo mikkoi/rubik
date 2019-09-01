@@ -90,7 +90,7 @@ if(NOT "${Check_INCLUDE_DIR}" STREQUAL "Check_INCLUDE_DIR-NOTFOUND")
   set(Check_MINOR_VERSION ${CMAKE_MATCH_1})
   string(REGEX MATCH "#define${RX_WS}+CHECK_MICRO_VERSION${RX_WS}+\\(([0-9]+)\\)" Check_MICRO_VERSION_A ${Check_HEADER})
   set(Check_MICRO_VERSION ${CMAKE_MATCH_1})
-  set(Check_VERSION "${check_MAJOR_VERSION}.${Check_MINOR_VERSION}.${Check_MICRO_VERSION}")
+  set(Check_VERSION "${Check_MAJOR_VERSION}.${Check_MINOR_VERSION}.${Check_MICRO_VERSION}")
 endif()
 
 include(FindPackageHandleStandardArgs)
