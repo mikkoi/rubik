@@ -27,9 +27,20 @@ typedef enum {
 typedef enum {
     Turn_Col_1 = 0, Turn_Col_2, Turn_Col_3, Turn_Row_1, Turn_Row_2, Turn_Row_3, NoTurn
 } R_turn;
+
+/* TURN_DIRECTION(<enum constant>, <same as string>, <opposite>) */
+#define LIST_OF_TURN_DIRECTIONS                                                \
+TURN_DIRECTION(Left, "Left", Right)                                            \
+TURN_DIRECTION(Right, "Right", Left)                                           \
+TURN_DIRECTION(Up, "Up", Down)                                                 \
+TURN_DIRECTION(Down, "Down", Up)                                               \
+TURN_DIRECTION(NoDir, "NoDir", NoDir)
+
+#define TURN_DIRECTION(a,b,c) a,
 typedef enum {
-    Left = 0, Right, Up, Down, NoDir
+    LIST_OF_TURN_DIRECTIONS
 } R_dir;
+#undef TURN_DIRECTION
 char const* R_turn_as_string(R_turn const turn);
 char const* R_dir_as_string(R_dir const dir);
 

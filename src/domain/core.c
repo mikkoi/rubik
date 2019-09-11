@@ -16,16 +16,20 @@ char const* R_turn_as_string(R_turn const t) {
     assert(0 <= t && t < 7);
     return R_turn_strings[t];
 }
-char const* R_dir_strings[5] = {
-    "Left", "Right", "Up", "Down", "NoDir"
+#define TURN_DIRECTION(a,b,c) b,
+char const* R_dir_strings[] = {
+    LIST_OF_TURN_DIRECTIONS
 };
+#undef TURN_DIRECTION
 char const* R_dir_as_string(R_dir const d) {
     assert(0 <= d && d < 5);
     return R_dir_strings[d];
 }
 /* When undoing a turn, we need the opposite direction.
- * But not opposite col/row.*/
-R_dir R_dir_opp[4] = { Right, Left, Down, Up };
+ * But column or row remain the same. */
+#define TURN_DIRECTION(a,b,c) c,
+R_dir R_dir_opp[] = { LIST_OF_TURN_DIRECTIONS };
+#undef TURN_DIRECTION
 
 void PutColour(struct Rubik* const r, R_square const square, R_row const row, R_column const col, R_colour const colour) {
     r->con[square][row][col] = colour;
