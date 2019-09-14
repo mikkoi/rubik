@@ -9,7 +9,7 @@
 #include <assert.h>
 #include "core.h"
 
-char const* R_turn_strings[7] = {
+char const* const R_turn_strings[7] = {
     "Col 1", "Col 2", "Col 3", "Row 1", "Row 2", "Row 3", "NoTurn"
 };
 char const* R_turn_as_string(R_turn const t) {
@@ -17,7 +17,7 @@ char const* R_turn_as_string(R_turn const t) {
     return R_turn_strings[t];
 }
 #define TURN_DIRECTION(a,b,c) b,
-char const* R_dir_strings[] = {
+char const* const R_dir_strings[] = {
     LIST_OF_TURN_DIRECTIONS
 };
 #undef TURN_DIRECTION
