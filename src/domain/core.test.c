@@ -989,7 +989,7 @@ START_TEST (testTurnUndoRedo) {
     assert_sqr(r, Sqr_5, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange, Orange);
     assert_sqr(r, Sqr_6, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow, Yellow);
 
-    struct RubikTurn* turn = (void*) 0;
+    struct RubikTurn* turn;
     turn = RedoTurnRubikGame(g);
     ck_assert(Up == turn->rbt_dir && Turn_Col_1 == turn->rbt_turn);
     ck_assert_ptr_nonnull(turn);
@@ -1000,8 +1000,9 @@ START_TEST (testTurnUndoRedo) {
     ck_assert_ptr_nonnull(turn);
     ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 2);
 
-    turn = RedoTurnRubikGame(g);
-    turn = RedoTurnRubikGame(g);
+    RedoTurnRubikGame(g);
+    RedoTurnRubikGame(g);
+    ck_assert_ptr_nonnull(turn);
     ck_assert_uint_eq(CurrentTurnNumberRubikGame(g), 4);
     ck_assert_uint_eq(LastTurnNumberRubikGame(g), 4);
     assert_sqr(r, Sqr_1, Yellow, Red   , Red   , Yellow, Red   , Red   , Yellow, Red   , Red   );
