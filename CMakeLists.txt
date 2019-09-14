@@ -81,6 +81,8 @@ string(APPEND C_AND_CXX_COMPILER_FLAGS
 string(APPEND CMAKE_C_FLAGS ${C_AND_CXX_COMPILER_FLAGS})
 string(APPEND CMAKE_CXX_FLAGS ${C_AND_CXX_COMPILER_FLAGS})
 
+set(CMAKE_C_CPPCHECK "cppcheck;--quiet;--std=c89;--enable=warning,style,performance,portability")
+
 include_directories(${CMAKE_BINARY_DIR}/src)
 
 
