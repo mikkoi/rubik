@@ -100,6 +100,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         string(APPEND CMAKE_C_FLAGS ${WARNING_COMPILER_FLAGS})
         string(APPEND CMAKE_CXX_FLAGS ${WARNING_COMPILER_FLAGS})
 
+        add_compile_definitions("_FORTIFY_SOURCE=2")
     endif()
 endif()
 
