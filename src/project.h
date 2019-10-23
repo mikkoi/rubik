@@ -21,5 +21,7 @@
 #define RUBIK_ATTRIBUTE_FALLTHROUGH
 #endif /* GCC 7.0 */
 
+#define _FORTIFY_SOURCE 2
+
 #endif
 

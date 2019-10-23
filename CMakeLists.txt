@@ -100,7 +100,10 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         string(APPEND CMAKE_C_FLAGS ${WARNING_COMPILER_FLAGS})
         string(APPEND CMAKE_CXX_FLAGS ${WARNING_COMPILER_FLAGS})
 
+        # When using _FORTIFY_SOURCE, must set optimize level to at least 1.
         add_compile_definitions("_FORTIFY_SOURCE=2")
+        string(APPEND CMAKE_C_FLAGS " -O1")
+        string(APPEND CMAKE_CXX_FLAGS " -O1")
     endif()
 endif()
 
