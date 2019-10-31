@@ -137,7 +137,9 @@ static void ColorRubikSide(WINDOW* win, size_t m, size_t n, R_colour side[m][n])
         y += 2;
     }
 #if !defined(NDEBUG)
+#if GCC_VERSION_AT_LEAST(4,3)
     mvwprintw(stdscr, debug_y++, 0, "__USE_FORTIFY_LEVEL:%u", __USE_FORTIFY_LEVEL);
+#endif
 #endif
     wrefresh(win);
     /* wrefresh(stdscr); */
