@@ -100,6 +100,11 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         string(APPEND CMAKE_C_FLAGS ${WARNING_COMPILER_FLAGS})
         string(APPEND CMAKE_CXX_FLAGS ${WARNING_COMPILER_FLAGS})
 
+    endif()
+    if(CMAKE_C_COMPILER_ID STREQUAL "GNU"
+        AND (CMAKE_C_COMPILER_VERSION VERSION_EQUAL 4.3
+            OR CMAKE_C_COMPILER_VERSION VERSION_GREATER 4.3))
+        # Blasted Clang! Doesn't support everything GNU does!
         # When using _FORTIFY_SOURCE, must set optimize level to at least 1.
         add_compile_definitions("_FORTIFY_SOURCE=2")
         string(APPEND CMAKE_C_FLAGS " -O1")
