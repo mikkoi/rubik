@@ -14,8 +14,8 @@ project( Rubik
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(BuildType)
 
+# Enable dashboard scripting
 include(CTest)
-enable_testing()
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
