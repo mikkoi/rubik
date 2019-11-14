@@ -5,14 +5,20 @@ endif()
 if(POLICY CMP0074)
     cmake_policy(SET CMP0074 NEW) # Use <PackageName>_ROOT variables
 endif()
-project( Rubik
-    VERSION 0.0.0.1
-    DESCRIPTION "Simulate Rubik's cube"
-    HOMEPAGE_URL "https://www.github.com/mikkoi/rubik"
-    LANGUAGES C)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(BuildType)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    string(TIMESTAMP version_tweak ".%Y%m%d")
+else()
+    set(version_tweak "")
+endif()
+project( Rubik
+    VERSION "0.0.1${version_tweak}"
+    DESCRIPTION "Simulate Rubik's cube"
+    HOMEPAGE_URL "https://www.github.com/mikkoi/rubik"
+    LANGUAGES C)
 
 # Enable dashboard scripting
 include(CTest)
