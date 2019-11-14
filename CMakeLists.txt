@@ -150,3 +150,9 @@ endif()
 # add_subdirectory(external)
 add_subdirectory(src)
 
+# #############################################################################
+# Packaging
+include(InstallRequiredSystemLibraries)
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+include(CPack)
+
