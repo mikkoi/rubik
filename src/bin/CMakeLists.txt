@@ -1,9 +1,8 @@
 add_executable(bin_rubik rubik.c)
 target_link_libraries(bin_rubik PRIVATE tui_core PRIVATE config)
 set_target_properties(bin_rubik PROPERTIES
-  OUTPUT_NAME rubik
-  VERSION ${PROJECT_VERSION}
-  SOVERSION ${PROJECT_VERSION_MAJOR}
+    OUTPUT_NAME rubik
+    VERSION ${PROJECT_VERSION}
 )
 if(BUILD_TESTING)
     add_test(NAME OutputVersionIsProjectVersion COMMAND "bin_rubik" "-V")
