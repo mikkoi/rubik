@@ -8,8 +8,8 @@
 
 #include <unistd.h>
 
+#include "config.h"
 #include "../project.h"
-#include <rubik.h>
 #include "../tui/core.h"
 
 #define RUBIK_COMMAND_LINE_OPTIONS "?hV"

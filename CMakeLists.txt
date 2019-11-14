@@ -22,6 +22,13 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
 # #############################################################################
+# Configure project
+set(private_include_directories "${CMAKE_BINARY_DIR}/private_include")
+configure_file(cmake/config.h.in "${private_include_directories}/config.h" @ONLY)
+add_library(config INTERFACE)
+target_include_directories(config INTERFACE "${private_include_directories}")
+
+# #############################################################################
 # CMake enabled static analysis
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -112,7 +119,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     endif()
 endif()
 
-include_directories(${CMAKE_BINARY_DIR}/src)
 
 
 # Doxygen

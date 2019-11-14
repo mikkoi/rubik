@@ -7,7 +7,7 @@
 
 #include <ncurses.h>
 
-#include "rubik.h"
+#include "config.h"
 #include "core.h"
 #include "../domain/core.h"
 
