@@ -72,7 +72,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         # CMAKE_<LANG>_INCLUDE_WHAT_YOU_USE only supported in 3.3.2 and upwards.
         find_package(ArtisticStyle 3.1)
         if(ArtisticStyle_FOUND)
-            set(CMAKE_C_INCLUDE_WHAT_YOU_USE "${ArtisticStyle_EXECUTABLE};--verbose;--style=gnu")
+            set(CMAKE_C_INCLUDE_WHAT_YOU_USE "${CMAKE_SOURCE_DIR}/cmake/iwyu-astyle.pl;--real-exe=${ArtisticStyle_EXECUTABLE}")
             set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${CMAKE_C_INCLUDE_WHAT_YOU_USE}")
         endif(ArtisticStyle_FOUND)
     endif()
