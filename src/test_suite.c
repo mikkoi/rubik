@@ -2,21 +2,19 @@
 #include <check.h>
 #include "test_suite.h"
 
-/* https://stackoverflow.com/questions/1143262/what-is-the-difference-between-const-int-const-int-const-and-int-const */
-
 static Suite * test_suite(void) {
     Suite *s;
     TCase *tc_core;
-    TFun tests[MAX_TESTS_IN_SUITE] = { 0 };
+    TTest const * tests[MAX_TESTS_IN_SUITE] = { 0 };
     add_tests(MAX_TESTS_IN_SUITE, tests);
 
-    s = suite_create("Rubik");
+    s = suite_create("ProjectUsageTest");
 
     /* Core test case */
     tc_core = tcase_create("Core");
 
     for(size_t i = 0; i < MAX_TESTS_IN_SUITE; ++i) {
-        TFun test = tests[i];
+        TTest const * test = tests[i];
         if(test) {
             tcase_add_test(tc_core, test);
         }
@@ -39,5 +37,4 @@ int main(void) {
     srunner_free(sr);
     return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
-
 

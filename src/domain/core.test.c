@@ -1081,7 +1081,7 @@ START_TEST (testTurnUndoRedoOne) {
 }
 END_TEST
 
-void add_tests(size_t const n, TFun tests[n]) {
+void add_tests(size_t const n, TTest const * tests[n]) {
     assert(n > 0);
     size_t i = 0;
     tests[i++] = testCreateRubik;

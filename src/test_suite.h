@@ -5,7 +5,7 @@
 #include <check.h>
 
 #define MAX_TESTS_IN_SUITE 20
-void add_tests(size_t const n, TFun tests[n]);
+void add_tests(size_t const n, TTest const * tests[n]);
 
 #endif
 
